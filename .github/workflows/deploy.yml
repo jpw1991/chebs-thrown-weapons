@@ -8,7 +8,7 @@ env:
   name: ChebsThrownWeapons
   jsonf: manifest.json
   desc: Adds throwing weapons like javelins, throwing knives/axes, shuriken, etc. to Valheim.
-  dlpath: https://github.com/jpw1991/chebs-sword-in-the-stone/releases/download
+  dlpath: https://github.com/jpw1991/chebs-thrown-weapons/releases/download
   dependencies: "ValheimModding-Jotunn@2.11.2" # dependencies separated by spaces
   categories: "Mods" # categories separated by spaces
   namespace: ChebGonaz

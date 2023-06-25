@@ -3,7 +3,7 @@
 RELEASEDIR=ChebsThrownWeapons/bin/Release
 DLL=$RELEASEDIR/ChebsThrownWeapons.dll
 LIB=$RELEASEDIR/ChebsValheimLibrary.dll
-BUN=../chebs-necromancy/ChebsNecromancyUnity/Assets/AssetBundles/chebsswordinthestone
+BUN=../chebs-necromancy/ChebsNecromancyUnity/Assets/AssetBundles/chebsthrownweapons
 PLUGINS=ChebsThrownWeapons/Package/plugins
 README=README.md
 TRANSLATIONS=Translations

@@ -22,7 +22,7 @@ namespace ChebsThrownWeapons
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     internal class ChebsThrownWeapons : BaseUnityPlugin
     {
-        public const string PluginGuid = "com.chebgonaz.chebsswordinthestone";
+        public const string PluginGuid = "com.chebgonaz.chebsthrownweapons";
         public const string PluginName = "ChebsThrownWeapons";
         public const string PluginVersion = "1.0.1";
         
@@ -122,7 +122,7 @@ namespace ChebsThrownWeapons
         private void LoadAssetBundle()
         {
             // order is important (I think): items, creatures, structures
-            var assetBundlePath = Path.Combine(Path.GetDirectoryName(Info.Location), "chebsswordinthestone");
+            var assetBundlePath = Path.Combine(Path.GetDirectoryName(Info.Location), "chebsthrownweapons");
             var chebgonazAssetBundle = AssetUtils.LoadAssetBundle(assetBundlePath);
             try
             {

@@ -36,7 +36,7 @@ namespace ChebsThrownWeapons.Patches
 
              if (player.GetSkillLevel(Skills.SkillType.Swords) < ChebsThrownWeapons.SwordSkillRequired.Value)
              {
-                 character.Message(MessageHud.MessageType.Center, "$chebgonaz_swordinthestone_unworthy");
+                 character.Message(MessageHud.MessageType.Center, "$chebgonaz_thrownweapons_unworthy");
                  return false; // deny base method completion
              }
 

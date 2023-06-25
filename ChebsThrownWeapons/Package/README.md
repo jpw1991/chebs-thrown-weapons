@@ -24,7 +24,7 @@ I'm partnered with [Bisect Hosting](https://bisecthosting.com/chebgonaz) to give
 
 If you would like to report a bug or request a feature, the best way to do it (in order from most preferable to least preferable) is:
 
-a) Create an issue on my [GitHub](hhttps://github.com/jpw1991/chebs-sword-in-the-stone).
+a) Create an issue on my [GitHub](hhttps://github.com/jpw1991/chebs-thrown-weapons).
 
 b) Write to me on [Discord](https://discord.com/invite/EB96ASQ).
 
@@ -44,8 +44,8 @@ A correct installation looks like:
 ```sh
 plugins/
 ├── Translations
-├── chebsswordinthestone
-├── chebsswordinthestone.manifest
+├── chebsthrownweapons
+├── chebsthrownweapons.manifest
 ├── ChebsThrownWeapons.dll
 ├── ChebsValheimLibrary.dll
 └── ... other mods ...
@@ -53,7 +53,7 @@ plugins/
 
 ## Features
 
-Detailed info in the [wiki](https://github.com/jpw1991/chebs-sword-in-the-stone/wiki). Here's the short version:
+Detailed info in the [wiki](https://github.com/jpw1991/chebs-thrown-weapons/wiki). Here's the short version:
 
 - Adds a powerful sword called Excalibur to the game. Excalibur:
 	- Cannot be crafted.
@@ -67,7 +67,7 @@ Detailed info in the [wiki](https://github.com/jpw1991/chebs-sword-in-the-stone/
 
 Press **F1** to open the mod's configuration panel.
 
-You can also edit the configs manually. Almost everything can be tweaked to your liking. For a complete list of all configuration options, please look [here](https://github.com/jpw1991/chebs-sword-in-the-stone/wiki/Configs).
+You can also edit the configs manually. Almost everything can be tweaked to your liking. For a complete list of all configuration options, please look [here](https://github.com/jpw1991/chebs-thrown-weapons/wiki/Configs).
 
 ### Known Issues
 
@@ -75,7 +75,7 @@ You can also edit the configs manually. Almost everything can be tweaked to your
 
 ## Source
 
-You can find the github [here](https://github.com/jpw1991/chebs-sword-in-the-stone).
+You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
 ## Special Thanks
 

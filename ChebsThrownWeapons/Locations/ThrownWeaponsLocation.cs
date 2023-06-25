@@ -6,7 +6,7 @@ namespace ChebsThrownWeapons.Locations
     public class ThrownWeaponsLocation : MonoBehaviour
     {
         public const string PrefabName = "ChebGonaz_ThrownWeapons.prefab";
-        public const string NameLocalization = "$chebgonaz_swordinthestone";
+        public const string NameLocalization = "$chebgonaz_thrownweapons";
 
         private void Awake()
         {
