@@ -120,8 +120,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Items\BronzeJavelinItem.cs" />
     <Compile Include="Items\IronJavelinItem.cs" />
     <Compile Include="Items\JavelinItem.cs" />
+    <Compile Include="Items\WoodJavelinItem.cs" />
     <Compile Include="Patches\AttackPatches.cs" />
     <Compile Include="Properties\IgnoreAccessModifiers.cs" />
     <Compile Include="ChebsThrownWeapons.cs" />

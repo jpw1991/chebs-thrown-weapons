@@ -11,14 +11,14 @@ using Logger = Jotunn.Logger;
 
 namespace ChebsThrownWeapons.Items
 {
-    public class IronJavelinItem : JavelinItem
+    public class WoodJavelinItem : JavelinItem
     {
-        public override string ItemName => "ChebGonaz_JavelinIron";
-        public override string PrefabName => "ChebGonaz_JavelinIron.prefab";
-        public override string NameLocalization => "$chebgonaz_javeliniron";
-        public override string DescriptionLocalization => "$chebgonaz_javeliniron_desc";
-        public string ProjectilePrefabName => "ChebGonaz_JavelinProjectileIron.prefab";
-        protected override string DefaultRecipe => "Iron:20,Wood:20";
+        public override string ItemName => "ChebGonaz_JavelinWood";
+        public override string PrefabName => "ChebGonaz_JavelinWood.prefab";
+        public override string NameLocalization => "$chebgonaz_javelinwood";
+        public override string DescriptionLocalization => "$chebgonaz_javelinwood_desc";
+        public string ProjectilePrefabName => "ChebGonaz_JavelinProjectileWood.prefab";
+        protected override string DefaultRecipe => "Wood:20";
         
         public static ConfigEntry<CraftingTable> CraftingStationRequired;
         public static ConfigEntry<int> CraftingStationLevel;
@@ -48,22 +48,22 @@ namespace ChebsThrownWeapons.Items
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
             BasePieceDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BasePieceDamage",
-                60f, new ConfigDescription(
+                20f, new ConfigDescription(
                     "The piercing damage dealt by the javelin.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
             PieceDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "PieceDamagePerLevel",
-                10f, new ConfigDescription(
+                2.5f, new ConfigDescription(
                     "The bonus piercing damage dealt by the javelin every time you upgrade.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
             BaseSlashingDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BaseSlashingDamage",
-                10f, new ConfigDescription(
-                    "The slashing damage dealt by the javelin.", null,
+                2.5f, new ConfigDescription(
+                    "The piercing damage dealt by the javelin.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
             SlashingDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "SlashingDamagePerLevel",
-                5f, new ConfigDescription(
+                2.5f, new ConfigDescription(
                     "The bonus slashing damage dealt by the javelin every time you upgrade.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }

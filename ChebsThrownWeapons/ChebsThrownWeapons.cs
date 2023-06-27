@@ -35,6 +35,8 @@ namespace ChebsThrownWeapons
         public static CustomLocalization Localization = LocalizationManager.Instance.GetLocalization();
 
         public static IronJavelinItem IronJavelin = new();
+        public static BronzeJavelinItem BronzeJavelin = new();
+        public static WoodJavelinItem WoodJavelin = new();
 
         private void Awake()
         {
@@ -62,6 +64,7 @@ namespace ChebsThrownWeapons
                                              "this setting on."));
             JavelinItem.CreateSharedConfigs(this);
             IronJavelin.CreateConfigs(this);
+            BronzeJavelin.CreateConfigs(this);
         }
 
         private void SetupWatcher()
@@ -99,21 +102,55 @@ namespace ChebsThrownWeapons
             var chebgonazAssetBundle = AssetUtils.LoadAssetBundle(assetBundlePath);
             try
             {
-                var ironJavelinProjectilePrefab =
-                    Base.LoadPrefabFromBundle(IronJavelin.ProjectilePrefabName, chebgonazAssetBundle,
-                        RadeonFriendly.Value);
-                ironJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
-                PrefabManager.Instance.AddPrefab(ironJavelinProjectilePrefab);
+                {
+                    var ironJavelinProjectilePrefab =
+                        Base.LoadPrefabFromBundle(IronJavelin.ProjectilePrefabName, chebgonazAssetBundle,
+                            RadeonFriendly.Value);
+                    ironJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                    PrefabManager.Instance.AddPrefab(ironJavelinProjectilePrefab);
                 
-                var ironJavelinPrefab = Base.LoadPrefabFromBundle(IronJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                var shared = ironJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                shared.m_attack.m_attackProjectile = ironJavelinProjectilePrefab;
-                shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
-                shared.m_damages.m_pierce = IronJavelinItem.BasePieceDamage.Value;
-                shared.m_damagesPerLevel.m_pierce = IronJavelinItem.PieceDamagePerLevel.Value;
-                shared.m_damages.m_slash = IronJavelinItem.BaseSlashingDamage.Value;
-                shared.m_damagesPerLevel.m_slash = IronJavelinItem.SlashingDamagePerLevel.Value;
-                ItemManager.Instance.AddItem(IronJavelin.GetCustomItemFromPrefab(ironJavelinPrefab));
+                    var ironJavelinPrefab = Base.LoadPrefabFromBundle(IronJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var shared = ironJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
+                    shared.m_attack.m_attackProjectile = ironJavelinProjectilePrefab;
+                    shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
+                    shared.m_damages.m_pierce = IronJavelinItem.BasePieceDamage.Value;
+                    shared.m_damagesPerLevel.m_pierce = IronJavelinItem.PieceDamagePerLevel.Value;
+                    shared.m_damages.m_slash = IronJavelinItem.BaseSlashingDamage.Value;
+                    shared.m_damagesPerLevel.m_slash = IronJavelinItem.SlashingDamagePerLevel.Value;
+                    ItemManager.Instance.AddItem(IronJavelin.GetCustomItemFromPrefab(ironJavelinPrefab));   
+                }
+                {
+                    var bronzeJavelinProjectilePrefab =
+                        Base.LoadPrefabFromBundle(BronzeJavelin.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    bronzeJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                    PrefabManager.Instance.AddPrefab(bronzeJavelinProjectilePrefab);
+
+                    var bronzeJavelinPrefab = Base.LoadPrefabFromBundle(BronzeJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var shared = bronzeJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
+                    shared.m_attack.m_attackProjectile = bronzeJavelinProjectilePrefab;
+                    shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
+                    shared.m_damages.m_pierce = BronzeJavelinItem.BasePieceDamage.Value;
+                    shared.m_damagesPerLevel.m_pierce = BronzeJavelinItem.PieceDamagePerLevel.Value;
+                    shared.m_damages.m_slash = BronzeJavelinItem.BaseSlashingDamage.Value;
+                    shared.m_damagesPerLevel.m_slash = BronzeJavelinItem.SlashingDamagePerLevel.Value;
+                    ItemManager.Instance.AddItem(BronzeJavelin.GetCustomItemFromPrefab(bronzeJavelinPrefab));                    
+                }
+                {
+                    var woodJavelinProjectilePrefab =
+                        Base.LoadPrefabFromBundle(WoodJavelin.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    woodJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                    PrefabManager.Instance.AddPrefab(woodJavelinProjectilePrefab);
+
+                    var woodJavelinPrefab = Base.LoadPrefabFromBundle(WoodJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var shared = woodJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
+                    shared.m_attack.m_attackProjectile = woodJavelinProjectilePrefab;
+                    shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
+                    shared.m_damages.m_pierce = WoodJavelinItem.BasePieceDamage.Value;
+                    shared.m_damagesPerLevel.m_pierce = WoodJavelinItem.PieceDamagePerLevel.Value;
+                    shared.m_damages.m_slash = WoodJavelinItem.BaseSlashingDamage.Value;
+                    shared.m_damagesPerLevel.m_slash = WoodJavelinItem.SlashingDamagePerLevel.Value;
+                    ItemManager.Instance.AddItem(WoodJavelin.GetCustomItemFromPrefab(woodJavelinPrefab));                    
+                }
             }
             catch (Exception ex)
             {

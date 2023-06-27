@@ -1,4 +1,8 @@
 {
+    "$chebgonaz_javelinwood": "Wooden Javelin",
+    "$chebgonaz_javelinwood_desc": "A wooden javelin which can be thrown.",
+    "$chebgonaz_javelinbronze": "Bronze Javelin",
+    "$chebgonaz_javelinbronze_desc": "A bronze javelin which can be thrown.",
     "$chebgonaz_javeliniron": "Iron Javelin",
     "$chebgonaz_javeliniron_desc": "An iron javelin which can be thrown."
 }
