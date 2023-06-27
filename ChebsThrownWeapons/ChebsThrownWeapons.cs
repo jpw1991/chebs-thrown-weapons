@@ -65,6 +65,7 @@ namespace ChebsThrownWeapons
             JavelinItem.CreateSharedConfigs(this);
             IronJavelin.CreateConfigs(this);
             BronzeJavelin.CreateConfigs(this);
+            WoodJavelin.CreateConfigs(this);
         }
 
         private void SetupWatcher()
@@ -87,6 +88,8 @@ namespace ChebsThrownWeapons
                 Logger.LogInfo("Read updated config values");
                 Config.Reload();
                 IronJavelin.UpdateRecipe();
+                BronzeJavelin.UpdateRecipe();
+                WoodJavelin.UpdateRecipe();
             }
             catch (Exception exc)
             {
