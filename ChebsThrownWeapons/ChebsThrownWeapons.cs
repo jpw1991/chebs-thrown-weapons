@@ -3,16 +3,12 @@ using System.IO;
 using BepInEx;
 using BepInEx.Configuration;
 using ChebsThrownWeapons.Items;
-using ChebsThrownWeapons.Locations;
-using ChebsThrownWeapons.Pickables;
 using ChebsValheimLibrary;
 using HarmonyLib;
 using Jotunn;
-using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using Jotunn.Utils;
-using UnityEngine;
 using Paths = BepInEx.Paths;
 
 namespace ChebsThrownWeapons
@@ -24,7 +20,7 @@ namespace ChebsThrownWeapons
     {
         public const string PluginGuid = "com.chebgonaz.chebsthrownweapons";
         public const string PluginName = "ChebsThrownWeapons";
-        public const string PluginVersion = "1.0.1";
+        public const string PluginVersion = "0.0.1";
         
         private const string ConfigFileName = PluginGuid + ".cfg";
         private static readonly string ConfigFileFullPath = Path.Combine(Paths.ConfigPath, ConfigFileName);
@@ -35,15 +31,10 @@ namespace ChebsThrownWeapons
 
         // if set to true, the particle effects that for some reason hurt radeon are dynamically disabled
         public static ConfigEntry<bool> RadeonFriendly;
-        public static ConfigEntry<int> ThrownWeaponsQuantity;
-        public static ConfigEntry<Heightmap.Biome> ThrownWeaponsLocationBiome;
-        public static ConfigEntry<int> SwordSkillRequired;
-        public static ConfigEntry<bool> ShowMapMarker;
-        public static ConfigEntry<Minimap.PinType> MapMarker;
 
         public static CustomLocalization Localization = LocalizationManager.Instance.GetLocalization();
 
-        public static ExcaliburItem Excalibur = new();
+        public static IronJavelinItem IronJavelin = new();
 
         private void Awake()
         {
@@ -69,27 +60,8 @@ namespace ChebsThrownWeapons
                                              "which seem to give users with Radeon cards trouble for unknown " +
                                              "reasons. If you have problems with lag it might also help to switch" +
                                              "this setting on."));
-
-            ThrownWeaponsQuantity = Config.Bind($"{GetType().Name} (Server Synced)", "ThrownWeaponsQuantity",
-                30, new ConfigDescription(
-                    "The amount of Sword in the Stone locations in the world.", null,
-                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
-
-            ThrownWeaponsLocationBiome = Config.Bind($"{GetType().Name} (Server Synced)", "ThrownWeaponsLocationBiome",
-                Heightmap.Biome.Meadows, new ConfigDescription(
-                    "The biome in which a Sword in the Stone can appear.", null,
-                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
-            SwordSkillRequired = Config.Bind($"{GetType().Name} (Server Synced)", "SwordSkillRequired",
-                100, new ConfigDescription(
-                    "The sword skill required to take Excalibur out of the stone.", null,
-                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
-            ShowMapMarker = Config.Bind($"{GetType().Name} (Client)", "ShowMapMarker",
-                true, new ConfigDescription("Whether a Sword in the Stone will appear on the map or not (currently not working, will fix soon)."));
-            
-            MapMarker = Config.Bind($"{GetType().Name} (Client)", "MapMarker",
-                Minimap.PinType.Boss, new ConfigDescription("The type of map marker shown for the Sword in the Stone."));
+            JavelinItem.CreateSharedConfigs(this);
+            IronJavelin.CreateConfigs(this);
         }
 
         private void SetupWatcher()
@@ -111,6 +83,7 @@ namespace ChebsThrownWeapons
             {
                 Logger.LogInfo("Read updated config values");
                 Config.Reload();
+                IronJavelin.UpdateRecipe();
             }
             catch (Exception exc)
             {
@@ -126,29 +99,21 @@ namespace ChebsThrownWeapons
             var chebgonazAssetBundle = AssetUtils.LoadAssetBundle(assetBundlePath);
             try
             {
-                // sword
-                var excaliburPrefab = Base.LoadPrefabFromBundle(Excalibur.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                ItemManager.Instance.AddItem(Excalibur.GetCustomItemFromPrefab(excaliburPrefab));
-
-                // stone pickable
-                var swordInTheStonePickablePrefab = chebgonazAssetBundle.LoadAsset<GameObject>(ThrownWeaponsPickable.PickablePrefabName);
-                swordInTheStonePickablePrefab.AddComponent<ThrownWeaponsPickable>();
-                PrefabManager.Instance.AddPrefab(swordInTheStonePickablePrefab);
+                var ironJavelinProjectilePrefab =
+                    Base.LoadPrefabFromBundle(IronJavelin.ProjectilePrefabName, chebgonazAssetBundle,
+                        RadeonFriendly.Value);
+                ironJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                PrefabManager.Instance.AddPrefab(ironJavelinProjectilePrefab);
                 
-                // stone location
-                var swordInTheStoneLocationPrefab = chebgonazAssetBundle.LoadAsset<GameObject>(ThrownWeaponsLocation.PrefabName);
-                swordInTheStoneLocationPrefab.AddComponent<ThrownWeaponsLocation>();
-                var swordInTheStoneConfig = new LocationConfig()
-                {
-                    Biome = ThrownWeaponsLocationBiome.Value,
-                    Quantity = ThrownWeaponsQuantity.Value,
-                    Priotized = true,
-                    ExteriorRadius = 2f,
-                    ClearArea = true,
-                };
-                var customLocation = new CustomLocation(swordInTheStoneLocationPrefab, false, swordInTheStoneConfig);
-                ZoneManager.Instance.AddCustomLocation(customLocation); 
-
+                var ironJavelinPrefab = Base.LoadPrefabFromBundle(IronJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                var shared = ironJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
+                shared.m_attack.m_attackProjectile = ironJavelinProjectilePrefab;
+                shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
+                shared.m_damages.m_pierce = IronJavelinItem.BasePieceDamage.Value;
+                shared.m_damagesPerLevel.m_pierce = IronJavelinItem.PieceDamagePerLevel.Value;
+                shared.m_damages.m_slash = IronJavelinItem.BaseSlashingDamage.Value;
+                shared.m_damagesPerLevel.m_slash = IronJavelinItem.SlashingDamagePerLevel.Value;
+                ItemManager.Instance.AddItem(IronJavelin.GetCustomItemFromPrefab(ironJavelinPrefab));
             }
             catch (Exception ex)
             {

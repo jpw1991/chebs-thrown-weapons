@@ -1,8 +1,4 @@
 {
-    "$chebgonaz_thrownweapons": "Sword in the Stone",
-    "$chebgonaz_thrownweapons_desc": "A mighty sword appears embedded within this stone.",
-    "$chebgonaz_thrownweapons_empty": "Just a regular stone where a mighty sword once was.",
-    "$chebgonaz_thrownweapons_unworthy": "Try as you might, the sword will not budge.",
-    "$chebgonaz_excalibur": "Excalibur",
-    "$chebgonaz_excalibur_desc": "Excalibur is the mythical sword of King Arthur."
+    "$chebgonaz_javeliniron": "Iron Javelin",
+    "$chebgonaz_javeliniron_desc": "An iron javelin which can be thrown."
 }

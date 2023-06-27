@@ -120,14 +120,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Items\ExcaliburItem.cs" />
-    <Compile Include="Patches\InventoryGuiPatches.cs" />
-    <Compile Include="Patches\PickablePatches.cs" />
-    <Compile Include="Pickables\ThrownWeaponsPickable.cs" />
+    <Compile Include="Items\IronJavelinItem.cs" />
+    <Compile Include="Items\JavelinItem.cs" />
+    <Compile Include="Patches\AttackPatches.cs" />
     <Compile Include="Properties\IgnoreAccessModifiers.cs" />
     <Compile Include="ChebsThrownWeapons.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Locations\ThrownWeaponsLocation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
