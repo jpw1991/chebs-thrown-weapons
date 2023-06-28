@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Items\BronzeJavelinItem.cs" />
+    <Compile Include="Items\FireJavelinItem.cs" />
     <Compile Include="Items\IronJavelinItem.cs" />
     <Compile Include="Items\JavelinItem.cs" />
     <Compile Include="Items\WoodJavelinItem.cs" />

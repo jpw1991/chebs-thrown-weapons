@@ -11,12 +11,12 @@ namespace ChebsThrownWeapons.Items
         public static void CreateSharedConfigs(BaseUnityPlugin plugin)
         {
             ProjectileVelocity = plugin.Config.Bind($"JavelinItem (Server Synced)", "ProjectileVelocity",
-            30f, new ConfigDescription(
+            50f, new ConfigDescription(
                 "The velocity of javelins being launched.", null,
                 new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
             ProjectileGravity = plugin.Config.Bind($"JavelinItem (Server Synced)", "ProjectileGravity",
-                15f, new ConfigDescription(
+                10f, new ConfigDescription(
                     "The gravity applied to javelins in flight.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             

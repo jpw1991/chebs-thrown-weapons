@@ -37,6 +37,7 @@ namespace ChebsThrownWeapons
         public static IronJavelinItem IronJavelin = new();
         public static BronzeJavelinItem BronzeJavelin = new();
         public static WoodJavelinItem WoodJavelin = new();
+        public static FireJavelinItem FireJavelin = new();
 
         private void Awake()
         {
@@ -66,6 +67,7 @@ namespace ChebsThrownWeapons
             IronJavelin.CreateConfigs(this);
             BronzeJavelin.CreateConfigs(this);
             WoodJavelin.CreateConfigs(this);
+            FireJavelin.CreateConfigs(this);
         }
 
         private void SetupWatcher()
@@ -90,6 +92,7 @@ namespace ChebsThrownWeapons
                 IronJavelin.UpdateRecipe();
                 BronzeJavelin.UpdateRecipe();
                 WoodJavelin.UpdateRecipe();
+                FireJavelin.UpdateRecipe();
             }
             catch (Exception exc)
             {
@@ -153,6 +156,24 @@ namespace ChebsThrownWeapons
                     shared.m_damages.m_slash = WoodJavelinItem.BaseSlashingDamage.Value;
                     shared.m_damagesPerLevel.m_slash = WoodJavelinItem.SlashingDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(WoodJavelin.GetCustomItemFromPrefab(woodJavelinPrefab));                    
+                }
+                {
+                    var fireJavelinProjectilePrefab =
+                        Base.LoadPrefabFromBundle(FireJavelin.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    fireJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                    PrefabManager.Instance.AddPrefab(fireJavelinProjectilePrefab);
+
+                    var fireJavelinPrefab = Base.LoadPrefabFromBundle(FireJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var shared = fireJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
+                    shared.m_attack.m_attackProjectile = fireJavelinProjectilePrefab;
+                    shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
+                    shared.m_damages.m_pierce = FireJavelinItem.BasePieceDamage.Value;
+                    shared.m_damagesPerLevel.m_pierce = FireJavelinItem.PieceDamagePerLevel.Value;
+                    shared.m_damages.m_slash = FireJavelinItem.BaseSlashingDamage.Value;
+                    shared.m_damagesPerLevel.m_slash = FireJavelinItem.SlashingDamagePerLevel.Value;
+                    shared.m_damages.m_fire = FireJavelinItem.BaseFireDamage.Value;
+                    shared.m_damagesPerLevel.m_fire = FireJavelinItem.FireDamagePerLevel.Value;
+                    ItemManager.Instance.AddItem(FireJavelin.GetCustomItemFromPrefab(fireJavelinPrefab));
                 }
             }
             catch (Exception ex)

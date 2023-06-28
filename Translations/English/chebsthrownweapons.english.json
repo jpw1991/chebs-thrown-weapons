@@ -1,6 +1,8 @@
 {
     "$chebgonaz_javelinwood": "Wooden Javelin",
     "$chebgonaz_javelinwood_desc": "A wooden javelin which can be thrown.",
+    "$chebgonaz_javelinfire": "Fire Javelin",
+    "$chebgonaz_javelinfire_desc": "A wooden javelin with a flaming, pitch-coated tip.",
     "$chebgonaz_javelinbronze": "Bronze Javelin",
     "$chebgonaz_javelinbronze_desc": "A bronze javelin which can be thrown.",
     "$chebgonaz_javeliniron": "Iron Javelin",
