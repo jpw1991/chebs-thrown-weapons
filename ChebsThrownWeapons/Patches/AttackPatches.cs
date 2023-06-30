@@ -1,4 +1,5 @@
 using ChebsThrownWeapons.Items;
+using ChebsThrownWeapons.Items.Javelins;
 using HarmonyLib;
 using UnityEngine;
 using Logger = Jotunn.Logger;

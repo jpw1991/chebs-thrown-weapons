@@ -1,7 +1,5 @@
 using BepInEx;
 using BepInEx.Configuration;
-using ChebsValheimLibrary;
-using ChebsValheimLibrary.Common;
 using ChebsValheimLibrary.Items;
 using Jotunn.Configs;
 using Jotunn.Entities;
@@ -9,7 +7,7 @@ using Jotunn.Managers;
 using UnityEngine;
 using Logger = Jotunn.Logger;
 
-namespace ChebsThrownWeapons.Items
+namespace ChebsThrownWeapons.Items.Javelins
 {
     public class IronJavelinItem : JavelinItem
     {
@@ -24,7 +22,7 @@ namespace ChebsThrownWeapons.Items
         public static ConfigEntry<int> CraftingStationLevel;
         public static ConfigEntry<string> CraftingCost;
 
-        public static ConfigEntry<float> BasePieceDamage, PieceDamagePerLevel, BaseSlashingDamage, SlashingDamagePerLevel;
+        public static ConfigEntry<float> BasePierceDamage, PierceDamagePerLevel, BaseSlashingDamage, SlashingDamagePerLevel;
 
         public override void CreateConfigs(BaseUnityPlugin plugin)
         {
@@ -47,12 +45,12 @@ namespace ChebsThrownWeapons.Items
                     "Materials needed to craft it. None or Blank will use Default settings.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
-            BasePieceDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BasePieceDamage",
+            BasePierceDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BasePierceDamage",
                 60f, new ConfigDescription(
                     "The piercing damage dealt by the javelin.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
-            PieceDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "PieceDamagePerLevel",
+            PierceDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "PierceDamagePerLevel",
                 10f, new ConfigDescription(
                     "The bonus piercing damage dealt by the javelin every time you upgrade.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
@@ -77,8 +75,8 @@ namespace ChebsThrownWeapons.Items
             
             var shared = ItemManager.Instance.GetItem(ItemName).ItemDrop.m_itemData.m_shared;
             shared.m_attack.m_projectileVel = ProjectileVelocity.Value;
-            shared.m_damages.m_pierce = BasePieceDamage.Value;
-            shared.m_damagesPerLevel.m_pierce = PieceDamagePerLevel.Value;
+            shared.m_damages.m_pierce = BasePierceDamage.Value;
+            shared.m_damagesPerLevel.m_pierce = PierceDamagePerLevel.Value;
             shared.m_damages.m_slash = BaseSlashingDamage.Value;
             shared.m_damagesPerLevel.m_slash = SlashingDamagePerLevel.Value;
         }

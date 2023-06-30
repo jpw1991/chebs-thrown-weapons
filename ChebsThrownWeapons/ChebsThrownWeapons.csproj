@@ -120,11 +120,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Items\BronzeJavelinItem.cs" />
-    <Compile Include="Items\FireJavelinItem.cs" />
-    <Compile Include="Items\IronJavelinItem.cs" />
-    <Compile Include="Items\JavelinItem.cs" />
-    <Compile Include="Items\WoodJavelinItem.cs" />
+    <Compile Include="Items\Javelins\BlackMetalJavelinItem.cs" />
+    <Compile Include="Items\Javelins\BronzeJavelinItem.cs" />
+    <Compile Include="Items\Javelins\FireJavelinItem.cs" />
+    <Compile Include="Items\Javelins\IronJavelinItem.cs" />
+    <Compile Include="Items\Javelins\JavelinItem.cs" />
+    <Compile Include="Items\Javelins\WoodJavelinItem.cs" />
+    <Compile Include="Items\Shurikens\BlackMetalShurikenItem.cs" />
+    <Compile Include="Items\Shurikens\BronzeShurikenItem.cs" />
+    <Compile Include="Items\Shurikens\IronShurikenItem.cs" />
+    <Compile Include="Items\Shurikens\ShurikenItem.cs" />
     <Compile Include="Patches\AttackPatches.cs" />
     <Compile Include="Properties\IgnoreAccessModifiers.cs" />
     <Compile Include="ChebsThrownWeapons.cs" />

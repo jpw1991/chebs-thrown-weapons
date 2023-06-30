@@ -1,7 +1,5 @@
 using BepInEx;
 using BepInEx.Configuration;
-using ChebsValheimLibrary;
-using ChebsValheimLibrary.Common;
 using ChebsValheimLibrary.Items;
 using Jotunn.Configs;
 using Jotunn.Entities;
@@ -9,24 +7,24 @@ using Jotunn.Managers;
 using UnityEngine;
 using Logger = Jotunn.Logger;
 
-namespace ChebsThrownWeapons.Items
+namespace ChebsThrownWeapons.Items.Shurikens
 {
-    public class FireJavelinItem : JavelinItem
+    public class BronzeShurikenItem : ShurikenItem
     {
-        public override string ItemName => "ChebGonaz_JavelinFire";
-        public override string PrefabName => "ChebGonaz_JavelinFire.prefab";
-        public override string NameLocalization => "$chebgonaz_javelinfire";
-        public override string DescriptionLocalization => "$chebgonaz_javelinfire_desc";
-        public string ProjectilePrefabName => "ChebGonaz_JavelinProjectileFire.prefab";
-        protected override string DefaultRecipe => "Wood:20,Resin:20";
+        public override string ItemName => "ChebGonaz_ShurikenBronze";
+        public override string PrefabName => "ChebGonaz_ShurikenBronze.prefab";
+        public override string NameLocalization => "$chebgonaz_shurikenbronze";
+        public override string DescriptionLocalization => "$chebgonaz_shurikenbronze_desc";
+        public string ProjectilePrefabName => "ChebGonaz_ShurikenProjectileBronze.prefab";
+        protected override string DefaultRecipe => "Bronze:20";
         
         public static ConfigEntry<CraftingTable> CraftingStationRequired;
         public static ConfigEntry<int> CraftingStationLevel;
         public static ConfigEntry<string> CraftingCost;
 
-        public static ConfigEntry<float> BasePieceDamage, PieceDamagePerLevel,
+        public static ConfigEntry<float> BasePierceDamage, PierceDamagePerLevel,
             BaseSlashingDamage, SlashingDamagePerLevel,
-            BaseFireDamage, FireDamagePerLevel;
+            BasePoisonDamage, PoisonDamagePerLevel;
 
         public override void CreateConfigs(BaseUnityPlugin plugin)
         {
@@ -49,34 +47,34 @@ namespace ChebsThrownWeapons.Items
                     "Materials needed to craft it. None or Blank will use Default settings.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
-            BasePieceDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BasePieceDamage",
-                20f, new ConfigDescription(
-                    "The piercing damage dealt by the javelin.", null,
+            BasePierceDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BasePierceDamage",
+                5f, new ConfigDescription(
+                    "The piercing damage dealt by the shuriken.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
-            PieceDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "PieceDamagePerLevel",
-                2.5f, new ConfigDescription(
-                    "The bonus piercing damage dealt by the javelin every time you upgrade.", null,
+            PierceDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "PierceDamagePerLevel",
+                5f, new ConfigDescription(
+                    "The bonus piercing damage dealt by the shuriken every time you upgrade.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
             BaseSlashingDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BaseSlashingDamage",
-                2.5f, new ConfigDescription(
-                    "The piercing damage dealt by the javelin.", null,
+                15f, new ConfigDescription(
+                    "The piercing damage dealt by the shuriken.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
             
             SlashingDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "SlashingDamagePerLevel",
-                2.5f, new ConfigDescription(
-                    "The bonus slashing damage dealt by the javelin every time you upgrade.", null,
-                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
-            BaseFireDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BaseFireDamage",
-                15f, new ConfigDescription(
-                    "The fire damage dealt by the javelin.", null,
-                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
-            FireDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "FireDamagePerLevel",
                 5f, new ConfigDescription(
-                    "The bonus fire damage dealt by the javelin every time you upgrade.", null,
+                    "The bonus slashing damage dealt by the shuriken every time you upgrade.", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+            
+            BasePoisonDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BasePoisonDamage",
+                5f, new ConfigDescription(
+                    "The poison damage dealt by the shuriken.", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+            
+            PoisonDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "PoisonDamagePerLevel",
+                5f, new ConfigDescription(
+                    "The bonus poison damage dealt by the shuriken every time you upgrade.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }
 
@@ -89,10 +87,12 @@ namespace ChebsThrownWeapons.Items
             
             var shared = ItemManager.Instance.GetItem(ItemName).ItemDrop.m_itemData.m_shared;
             shared.m_attack.m_projectileVel = ProjectileVelocity.Value;
-            shared.m_damages.m_pierce = BasePieceDamage.Value;
-            shared.m_damagesPerLevel.m_pierce = PieceDamagePerLevel.Value;
+            shared.m_damages.m_pierce = BasePierceDamage.Value;
+            shared.m_damagesPerLevel.m_pierce = PierceDamagePerLevel.Value;
             shared.m_damages.m_slash = BaseSlashingDamage.Value;
             shared.m_damagesPerLevel.m_slash = SlashingDamagePerLevel.Value;
+            shared.m_damages.m_poison = BasePoisonDamage.Value;
+            shared.m_damagesPerLevel.m_poison = PoisonDamagePerLevel.Value;
         }
 
         public override CustomItem GetCustomItemFromPrefab(GameObject prefab)

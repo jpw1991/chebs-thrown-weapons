@@ -82,6 +82,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 ## Special Thanks
 
 - Drago for commissioning the mod.
+- [Clint Bellanger](http://pfunked.deviantart.com/) for the [Shuriken models](https://opengameart.org/content/shuriken).
 
 ## Changelog
 
