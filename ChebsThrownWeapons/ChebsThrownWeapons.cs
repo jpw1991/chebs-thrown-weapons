@@ -3,6 +3,7 @@ using System.IO;
 using BepInEx;
 using BepInEx.Configuration;
 using ChebsThrownWeapons.Items;
+using ChebsThrownWeapons.Items.Axes;
 using ChebsThrownWeapons.Items.Javelins;
 using ChebsThrownWeapons.Items.Shurikens;
 using ChebsValheimLibrary;
@@ -46,6 +47,10 @@ namespace ChebsThrownWeapons
         public static IronShurikenItem IronShuriken = new();
         public static BlackMetalShurikenItem BlackMetalShuriken = new();
 
+        public static BronzeThrowingAxeItem BronzeThrowingAxe = new();
+        public static IronThrowingAxeItem IronThrowingAxe = new();
+        public static BlackMetalThrowingAxeItem BlackMetalThrowingAxe = new();
+
         private void Awake()
         {
             if (!Base.VersionCheck(ChebsValheimLibraryVersion, out string message))
@@ -81,6 +86,11 @@ namespace ChebsThrownWeapons
             BronzeShuriken.CreateConfigs(this);
             IronShuriken.CreateConfigs(this);
             BlackMetalShuriken.CreateConfigs(this);
+            
+            ThrowingAxeItem.CreateSharedConfigs(this);
+            BronzeThrowingAxe.CreateConfigs(this);
+            IronThrowingAxe.CreateConfigs(this);
+            BlackMetalThrowingAxe.CreateConfigs(this);
         }
 
         private void SetupWatcher()
@@ -110,6 +120,9 @@ namespace ChebsThrownWeapons
                 BronzeShuriken.UpdateRecipe();
                 IronShuriken.UpdateRecipe();
                 BlackMetalShuriken.UpdateRecipe();
+                BronzeThrowingAxe.UpdateRecipe();
+                IronThrowingAxe.UpdateRecipe();
+                BlackMetalThrowingAxe.UpdateRecipe();
             }
             catch (Exception exc)
             {
@@ -257,6 +270,54 @@ namespace ChebsThrownWeapons
                     shared.m_damages.m_poison = BlackMetalShurikenItem.BasePoisonDamage.Value;
                     shared.m_damagesPerLevel.m_poison = BlackMetalShurikenItem.PoisonDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(BlackMetalShuriken.GetCustomItemFromPrefab(blackMetalShurikenPrefab));
+                }
+                {
+                    var bronzeThrowingAxeProjectilePrefab =
+                        Base.LoadPrefabFromBundle(BronzeThrowingAxe.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    bronzeThrowingAxeProjectilePrefab.GetComponent<Projectile>().m_gravity = ThrowingAxeItem.ProjectileGravity.Value;
+                    PrefabManager.Instance.AddPrefab(bronzeThrowingAxeProjectilePrefab);
+
+                    var bronzeThrowingAxePrefab = Base.LoadPrefabFromBundle(BronzeThrowingAxe.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var shared = bronzeThrowingAxePrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
+                    shared.m_attack.m_attackProjectile = bronzeThrowingAxeProjectilePrefab;
+                    shared.m_attack.m_projectileVel = ThrowingAxeItem.ProjectileVelocity.Value;
+                    shared.m_damages.m_blunt = BronzeThrowingAxeItem.BaseBluntDamage.Value;
+                    shared.m_damagesPerLevel.m_blunt = BronzeThrowingAxeItem.BluntDamagePerLevel.Value;
+                    shared.m_damages.m_slash = BronzeThrowingAxeItem.BaseSlashingDamage.Value;
+                    shared.m_damagesPerLevel.m_slash = BronzeThrowingAxeItem.SlashingDamagePerLevel.Value;
+                    ItemManager.Instance.AddItem(BronzeThrowingAxe.GetCustomItemFromPrefab(bronzeThrowingAxePrefab));
+                }
+                {
+                    var ironThrowingAxeProjectilePrefab =
+                        Base.LoadPrefabFromBundle(IronThrowingAxe.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    ironThrowingAxeProjectilePrefab.GetComponent<Projectile>().m_gravity = ThrowingAxeItem.ProjectileGravity.Value;
+                    PrefabManager.Instance.AddPrefab(ironThrowingAxeProjectilePrefab);
+
+                    var ironThrowingAxePrefab = Base.LoadPrefabFromBundle(IronThrowingAxe.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var shared = ironThrowingAxePrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
+                    shared.m_attack.m_attackProjectile = ironThrowingAxeProjectilePrefab;
+                    shared.m_attack.m_projectileVel = ThrowingAxeItem.ProjectileVelocity.Value;
+                    shared.m_damages.m_blunt = IronThrowingAxeItem.BaseBluntDamage.Value;
+                    shared.m_damagesPerLevel.m_blunt = IronThrowingAxeItem.BaseBluntDamage.Value;
+                    shared.m_damages.m_slash = IronThrowingAxeItem.BaseSlashingDamage.Value;
+                    shared.m_damagesPerLevel.m_slash = IronThrowingAxeItem.SlashingDamagePerLevel.Value;
+                    ItemManager.Instance.AddItem(IronThrowingAxe.GetCustomItemFromPrefab(ironThrowingAxePrefab));
+                }
+                {
+                    var blackMetalThrowingAxeProjectilePrefab =
+                        Base.LoadPrefabFromBundle(BlackMetalThrowingAxe.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    blackMetalThrowingAxeProjectilePrefab.GetComponent<Projectile>().m_gravity = ThrowingAxeItem.ProjectileGravity.Value;
+                    PrefabManager.Instance.AddPrefab(blackMetalThrowingAxeProjectilePrefab);
+
+                    var blackMetalThrowingAxePrefab = Base.LoadPrefabFromBundle(BlackMetalThrowingAxe.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var shared = blackMetalThrowingAxePrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
+                    shared.m_attack.m_attackProjectile = blackMetalThrowingAxeProjectilePrefab;
+                    shared.m_attack.m_projectileVel = ThrowingAxeItem.ProjectileVelocity.Value;
+                    shared.m_damages.m_blunt = BlackMetalThrowingAxeItem.BaseBluntDamage.Value;
+                    shared.m_damagesPerLevel.m_blunt = BlackMetalThrowingAxeItem.BaseBluntDamage.Value;
+                    shared.m_damages.m_slash = BlackMetalThrowingAxeItem.BaseSlashingDamage.Value;
+                    shared.m_damagesPerLevel.m_slash = BlackMetalThrowingAxeItem.SlashingDamagePerLevel.Value;
+                    ItemManager.Instance.AddItem(BlackMetalThrowingAxe.GetCustomItemFromPrefab(blackMetalThrowingAxePrefab));
                 }
             }
             catch (Exception ex)

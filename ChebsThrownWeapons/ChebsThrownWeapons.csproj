@@ -120,6 +120,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Items\Axes\BlackMetalThrowingAxeItem.cs" />
+    <Compile Include="Items\Axes\BronzeThrowingAxeItem.cs" />
+    <Compile Include="Items\Axes\IronThrowingAxeItem.cs" />
+    <Compile Include="Items\Axes\ThrowingAxeItem.cs" />
     <Compile Include="Items\Javelins\BlackMetalJavelinItem.cs" />
     <Compile Include="Items\Javelins\BronzeJavelinItem.cs" />
     <Compile Include="Items\Javelins\FireJavelinItem.cs" />
