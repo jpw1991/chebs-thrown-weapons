@@ -21,7 +21,7 @@ namespace ChebsThrownWeapons.Items.Axes
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
 
             ProjectileSpawnHeight = plugin.Config.Bind($"ThrowingAxeItem (Server Synced)", "ProjectileSpawnHeight",
-                .25f, new ConfigDescription(
+                .5f, new ConfigDescription(
                     "The extra height applied to throwing axe's spawn height.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }

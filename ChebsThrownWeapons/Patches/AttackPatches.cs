@@ -1,5 +1,7 @@
 using ChebsThrownWeapons.Items;
+using ChebsThrownWeapons.Items.Axes;
 using ChebsThrownWeapons.Items.Javelins;
+using ChebsThrownWeapons.Items.Shurikens;
 using HarmonyLib;
 using UnityEngine;
 using Logger = Jotunn.Logger;
@@ -15,12 +17,22 @@ namespace ChebsThrownWeapons.Patches
         {
             // raise height of javelin projectile's spawn
             var lastProjectile = __instance.m_weapon.m_lastProjectile;
-            if (lastProjectile != null &&
-                lastProjectile.name.StartsWith("ChebGonaz_JavelinProjectile"))
+            if (lastProjectile == null) return;
+            
+            if (lastProjectile.name.StartsWith("ChebGonaz_ShurikenProjectile"))
             {
-                Logger.LogInfo("Javelin projectile spawning");
                 __instance.m_weapon.m_lastProjectile.transform.position +=
-                    new Vector3(0, JavelinItem.ProjectileSpawnHeight.Value);
+                    new Vector3(0, ShurikenItem.ProjectileSpawnHeight.Value);   
+            }
+            else if (lastProjectile.name.StartsWith("ChebGonaz_JavelinProjectile"))
+            {
+                __instance.m_weapon.m_lastProjectile.transform.position +=
+                    new Vector3(0, JavelinItem.ProjectileSpawnHeight.Value);   
+            }
+            else if (lastProjectile.name.StartsWith("ChebGonaz_ThrowingAxeProjectile"))
+            {
+                __instance.m_weapon.m_lastProjectile.transform.position +=
+                    new Vector3(0, ThrowingAxeItem.ProjectileSpawnHeight.Value);   
             }
         }
     }

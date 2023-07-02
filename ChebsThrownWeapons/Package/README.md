@@ -12,7 +12,7 @@ This mod was commissioned by Discord user Drago. If you would like me to create 
 
 If you don't like this one, consider:
 
-- blacks7ar's Javelins
+- [blacks7ar's Javelins](https://valheim.thunderstore.io/package/blacks7ar/Javelins/)
 - Therzie's Javelins
 
 ## About Me
@@ -85,7 +85,18 @@ You can also edit the configs manually. Almost everything can be tweaked to your
 - Right click to aim, like a bow
 	+ Being able to hold right click to aim with a javelin/shuriken/axe before throwing it would be nice.
 - General feedback/improvements to implement from Drago himself:
-	+ to do
+	+ Javelins
+		+ Need more distance, little less arc
+		+ Movement penalty should be 2% IMO
+		+ The noise that registers is too loud/goes to far. Boars alert from across the map on a throw at something else
+	+ Axes
+		+ Little more distance with more arc than the javelins IMO
+		+ Other than that they are great
+	+ Shuriken - Almost perfect
+		+ Spread could be a little less or get less with skill increase
+		+ Launch spot is too low. Needs increased a bit
+		+ Would like to see them auto select the next throwing weapon in your inventory like arrows when the one in use breaks.
+		+ I think the durability could be increased, depending on if you can get that auto equip going.
 
 ## Source
 
@@ -104,6 +115,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
  Date | Version | Notes 
 --- | --- | ---
+01/07/2023 | 1.0.1 | Fix wrong description in manifest file; update readme with link to alternative javelin mod; allow adjustment of shuriken and axe projectile height; fix config name errors
 01/07/2023 | 1.0.0 | Initial release
 25/06/2023 | 0.0.1 | First alpha version
 
