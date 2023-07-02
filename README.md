@@ -1,8 +1,12 @@
 # Cheb's Thrown Weapons
 
-Adds throwing weapons like javelins, throwing knives/axes, shuriken, etc. to Valheim.
+Adds throwing weapons to Valheim: Javelins, Shuriken, Throwing Axes.
 
 This mod was commissioned by Discord user Drago. If you would like me to create a mod for you, please get in touch.
+
+**Video:**
+
+[![Cheb's Thrown Weapons Valheim](https://img.youtube.com/vi/6IO74EBhBKE/0.jpg)](https://youtu.be/6IO74EBhBKE "Cheb's Thrown Weapons Valheim")
 
 ## About Me
 
@@ -69,9 +73,12 @@ Press **F1** to open the mod's configuration panel.
 
 You can also edit the configs manually. Almost everything can be tweaked to your liking. For a complete list of all configuration options, please look [here](https://github.com/jpw1991/chebs-thrown-weapons/wiki/Configs).
 
-### Known Issues
+### Pending Improvements
 
-- None
+- Right click to aim, like a bow
+	+ Being able to hold right click to aim with a javelin/shuriken/axe before throwing it would be nice.
+- General feedback/improvements to implement from Drago himself:
+	+ to do
 
 ## Source
 
@@ -90,6 +97,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
  Date | Version | Notes 
 --- | --- | ---
+01/07/2023 | 1.0.0 | Initial release
 25/06/2023 | 0.0.1 | First alpha version
 
 </details>

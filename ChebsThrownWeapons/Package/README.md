@@ -1,8 +1,12 @@
-# Cheb's Sword in the Stone
+# Cheb's Thrown Weapons
 
-Cheb's Sword in the Stone adds a powerful one-handed sword called Excalibur to Valheim. This sword must be found somewhere in the world and only someone with 100 sword skill can remove it from the stone and use it.
+Adds throwing weapons to Valheim: Javelins, Shuriken, Throwing Axes.
 
-This mod was commissioned by Discord user Mintymintos. If you would like me to create a mod for you, please get in touch.
+This mod was commissioned by Discord user Drago. If you would like me to create a mod for you, please get in touch.
+
+**Video:**
+
+[![Cheb's Thrown Weapons Valheim](https://img.youtube.com/vi/6IO74EBhBKE/0.jpg)](https://youtu.be/6IO74EBhBKE "Cheb's Thrown Weapons Valheim")
 
 ## About Me
 
@@ -24,7 +28,7 @@ I'm partnered with [Bisect Hosting](https://bisecthosting.com/chebgonaz) to give
 
 If you would like to report a bug or request a feature, the best way to do it (in order from most preferable to least preferable) is:
 
-a) Create an issue on my [GitHub](hhttps://github.com/jpw1991/chebs-thrown-weapons).
+a) Create an issue on my [GitHub](https://github.com/jpw1991/chebs-thrown-weapons).
 
 b) Write to me on [Discord](https://discord.com/invite/EB96ASQ).
 
@@ -55,11 +59,11 @@ plugins/
 
 Detailed info in the [wiki](https://github.com/jpw1991/chebs-thrown-weapons/wiki). Here's the short version:
 
-- Adds a powerful sword called Excalibur to the game. Excalibur:
-	- Cannot be crafted.
-	- Suffers no durability loss.
-	- Deals 100 slashing damage and 50 spirit damage.
-- The sword must be found and taken from the stone. It requires 100 sword skill to remove the sword from the stone.
+- Adds throwing weapons the game:
+	- Javelins
+	- Axes
+	- Shuriken
+- Craftable at the appropriate workbench, eg. bronze javelins at the forge.
 
 ### Config
 
@@ -69,9 +73,12 @@ Press **F1** to open the mod's configuration panel.
 
 You can also edit the configs manually. Almost everything can be tweaked to your liking. For a complete list of all configuration options, please look [here](https://github.com/jpw1991/chebs-thrown-weapons/wiki/Configs).
 
-### Known Issues
+### Pending Improvements
 
-- Quantity doesn't seem to be exact, rather approximate. This will hopefully be locked down and fixed in time.
+- Right click to aim, like a bow
+	+ Being able to hold right click to aim with a javelin/shuriken/axe before throwing it would be nice.
+- General feedback/improvements to implement from Drago himself:
+	+ to do
 
 ## Source
 
@@ -79,9 +86,9 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
 ## Special Thanks
 
-- MintyMintos for commissioning the mod.
-- [System 6G](https://opengameart.org/users/system-g6) for providing the [Medieval Weapons Pack](https://opengameart.org/content/medieval-weapon-pack) from which I took the Excalibur model.
-- [qubodup](https://opengameart.org/users/qubodup) for the [Wisdom Magic Sound Effect Pack](https://opengameart.org/content/wisdom-magic) which I use for the looting sound effect. [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/) stipulates I must indicate whether changes were made: no changes were made.
+- Drago for commissioning the mod.
+- [Clint Bellanger](http://pfunked.deviantart.com/) for the [Shuriken models](https://opengameart.org/content/shuriken).
+- [Leinnan](https://opengameart.org/users/leinnan) for the [Slavic Axe Pack](https://opengameart.org/content/slavic-axes). [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/) stipulates I must indicate whether changes were made: Yes, the texture was resized to be 32x32 and passed through noise filters in Gimp to make it grainy and lower resolution. This is so it blends in better with the Valheim aesthetic.
 
 ## Changelog
 
@@ -90,9 +97,8 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
  Date | Version | Notes 
 --- | --- | ---
-25/06/2023 | 1.0.1 | Permit upgrading of Excalibur
-24/06/2023 | 1.0.0 | Release
-23/06/2023 | 0.0.1   | First alpha version
+01/07/2023 | 1.0.0 | Initial release
+25/06/2023 | 0.0.1 | First alpha version
 
 </details>
 
