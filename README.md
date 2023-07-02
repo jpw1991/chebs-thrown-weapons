@@ -8,6 +8,13 @@ This mod was commissioned by Discord user Drago. If you would like me to create 
 
 [![Cheb's Thrown Weapons Valheim](https://img.youtube.com/vi/6IO74EBhBKE/0.jpg)](https://youtu.be/6IO74EBhBKE "Cheb's Thrown Weapons Valheim")
 
+## Alternative Javelin Mods
+
+If you don't like this one, consider:
+
+- blacks7ar's Javelins
+- Therzie's Javelins
+
 ## About Me
 
 [![image1](https://imgur.com/Fahi6sP.png)](https://chebgonaz.pythonanywhere.com)
