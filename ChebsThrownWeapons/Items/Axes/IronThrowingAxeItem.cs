@@ -17,12 +17,15 @@ namespace ChebsThrownWeapons.Items.Axes
         public override string DescriptionLocalization => "$chebgonaz_throwingaxeiron_desc";
         public string ProjectilePrefabName => "ChebGonaz_ThrowingAxeIronProjectile.prefab";
         protected override string DefaultRecipe => "Iron:20,Wood:20";
-        
+
         public static ConfigEntry<CraftingTable> CraftingStationRequired;
         public static ConfigEntry<int> CraftingStationLevel;
         public static ConfigEntry<string> CraftingCost;
 
-        public static ConfigEntry<float> BaseBluntDamage, BluntDamagePerLevel, BaseSlashingDamage, SlashingDamagePerLevel;
+        public static ConfigEntry<float> BaseBluntDamage,
+            BluntDamagePerLevel,
+            BaseSlashingDamage,
+            SlashingDamagePerLevel;
 
         public override void CreateConfigs(BaseUnityPlugin plugin)
         {
@@ -44,22 +47,22 @@ namespace ChebsThrownWeapons.Items.Axes
                 DefaultRecipe, new ConfigDescription(
                     "Materials needed to craft it. None or Blank will use Default settings.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             BaseBluntDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BaseBluntDamage",
                 25f, new ConfigDescription(
                     "The blunt damage dealt by the throwing axe.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             BluntDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BluntDamagePerLevel",
                 5f, new ConfigDescription(
                     "The bonus blunt damage dealt by the throwing axe every time you upgrade.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             BaseSlashingDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BaseSlashingDamage",
                 10f, new ConfigDescription(
                     "The piercing damage dealt by the throwing axe.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             SlashingDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "SlashingDamagePerLevel",
                 5f, new ConfigDescription(
                     "The bonus slashing damage dealt by the throwing axe every time you upgrade.", null,
@@ -69,10 +72,10 @@ namespace ChebsThrownWeapons.Items.Axes
         public override void UpdateRecipe()
         {
             UpdateRecipe(CraftingStationRequired, CraftingCost, CraftingStationLevel);
-            
-            PrefabManager.Instance.GetPrefab(ProjectilePrefabName)
+
+            PrefabManager.Instance.GetPrefab(ProjectilePrefabName.Substring(0, ProjectilePrefabName.Length - 7))
                 .GetComponent<Projectile>().m_gravity = ProjectileGravity.Value;
-            
+
             var shared = ItemManager.Instance.GetItem(ItemName).ItemDrop.m_itemData.m_shared;
             shared.m_attack.m_projectileVel = ProjectileVelocity.Value;
             shared.m_damages.m_blunt = BaseBluntDamage.Value;

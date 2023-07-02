@@ -17,14 +17,17 @@ namespace ChebsThrownWeapons.Items.Javelins
         public override string DescriptionLocalization => "$chebgonaz_javelinfire_desc";
         public string ProjectilePrefabName => "ChebGonaz_JavelinProjectileFire.prefab";
         protected override string DefaultRecipe => "Wood:20,Resin:20";
-        
+
         public static ConfigEntry<CraftingTable> CraftingStationRequired;
         public static ConfigEntry<int> CraftingStationLevel;
         public static ConfigEntry<string> CraftingCost;
 
-        public static ConfigEntry<float> BasePierceDamage, PierceDamagePerLevel,
-            BaseSlashingDamage, SlashingDamagePerLevel,
-            BaseFireDamage, FireDamagePerLevel;
+        public static ConfigEntry<float> BasePierceDamage,
+            PierceDamagePerLevel,
+            BaseSlashingDamage,
+            SlashingDamagePerLevel,
+            BaseFireDamage,
+            FireDamagePerLevel;
 
         public override void CreateConfigs(BaseUnityPlugin plugin)
         {
@@ -46,32 +49,32 @@ namespace ChebsThrownWeapons.Items.Javelins
                 DefaultRecipe, new ConfigDescription(
                     "Materials needed to craft it. None or Blank will use Default settings.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             BasePierceDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BasePierceDamage",
                 20f, new ConfigDescription(
                     "The piercing damage dealt by the javelin.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             PierceDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "PierceDamagePerLevel",
                 2.5f, new ConfigDescription(
                     "The bonus piercing damage dealt by the javelin every time you upgrade.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             BaseSlashingDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BaseSlashingDamage",
                 2.5f, new ConfigDescription(
                     "The piercing damage dealt by the javelin.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             SlashingDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "SlashingDamagePerLevel",
                 2.5f, new ConfigDescription(
                     "The bonus slashing damage dealt by the javelin every time you upgrade.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             BaseFireDamage = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "BaseFireDamage",
                 15f, new ConfigDescription(
                     "The fire damage dealt by the javelin.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             FireDamagePerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "FireDamagePerLevel",
                 5f, new ConfigDescription(
                     "The bonus fire damage dealt by the javelin every time you upgrade.", null,
@@ -81,10 +84,10 @@ namespace ChebsThrownWeapons.Items.Javelins
         public override void UpdateRecipe()
         {
             UpdateRecipe(CraftingStationRequired, CraftingCost, CraftingStationLevel);
-            
-            PrefabManager.Instance.GetPrefab(ProjectilePrefabName)
+
+            PrefabManager.Instance.GetPrefab(ProjectilePrefabName.Substring(0, ProjectilePrefabName.Length - 7))
                 .GetComponent<Projectile>().m_gravity = ProjectileGravity.Value;
-            
+
             var shared = ItemManager.Instance.GetItem(ItemName).ItemDrop.m_itemData.m_shared;
             shared.m_attack.m_projectileVel = ProjectileVelocity.Value;
             shared.m_damages.m_pierce = BasePierceDamage.Value;

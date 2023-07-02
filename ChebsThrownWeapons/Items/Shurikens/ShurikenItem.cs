@@ -6,20 +6,20 @@ namespace ChebsThrownWeapons.Items.Shurikens
 {
     public class ShurikenItem : Item
     {
-        public static ConfigEntry<float> ProjectileVelocity, ProjectileGravity;//, ProjectileSpawnHeight;
+        public static ConfigEntry<float> ProjectileVelocity, ProjectileGravity; //, ProjectileSpawnHeight;
 
         public static void CreateSharedConfigs(BaseUnityPlugin plugin)
         {
             ProjectileVelocity = plugin.Config.Bind($"JavelinItem (Server Synced)", "ProjectileVelocity",
-            50f, new ConfigDescription(
-                "The velocity of shurikens being launched.", null,
-                new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+                50f, new ConfigDescription(
+                    "The velocity of shurikens being launched.", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
             ProjectileGravity = plugin.Config.Bind($"JavelinItem (Server Synced)", "ProjectileGravity",
                 10f, new ConfigDescription(
                     "The gravity applied to shurikens in flight.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
-            
+
             // ProjectileSpawnHeight = plugin.Config.Bind($"JavelinItem (Server Synced)", "ProjectileSpawnHeight",
             //     0f, new ConfigDescription(
             //         "The extra height applied to shuriken's spawn height.", null,
