@@ -115,6 +115,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
  Date | Version | Notes 
 --- | --- | ---
+07/07/2023 | 1.0.2 | Fix wrong recipes on shurikens
 01/07/2023 | 1.0.1 | Fix wrong description in manifest file; update readme with link to alternative javelin mod; allow adjustment of shuriken and axe projectile height; fix config name errors
 01/07/2023 | 1.0.0 | Initial release
 25/06/2023 | 0.0.1 | First alpha version

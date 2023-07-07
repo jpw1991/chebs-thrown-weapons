@@ -16,7 +16,7 @@ namespace ChebsThrownWeapons.Items.Shurikens
         public override string NameLocalization => "$chebgonaz_shurikeniron";
         public override string DescriptionLocalization => "$chebgonaz_shurikeniron_desc";
         public string ProjectilePrefabName => "ChebGonaz_ShurikenProjectileIron.prefab";
-        protected override string DefaultRecipe => "Bronze:20";
+        protected override string DefaultRecipe => "Iron:20";
 
         public static ConfigEntry<CraftingTable> CraftingStationRequired;
         public static ConfigEntry<int> CraftingStationLevel;
