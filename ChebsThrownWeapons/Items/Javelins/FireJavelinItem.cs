@@ -34,7 +34,7 @@ namespace ChebsThrownWeapons.Items.Javelins
             base.CreateConfigs(plugin);
 
             CraftingStationRequired = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "CraftingStation",
-                CraftingTable.Forge, new ConfigDescription("Crafting station where it's available",
+                CraftingTable.Workbench, new ConfigDescription("Crafting station where it's available",
                     null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
 

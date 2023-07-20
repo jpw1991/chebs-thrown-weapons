@@ -21,7 +21,7 @@ namespace ChebsThrownWeapons.Items.Shurikens
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
 
             ProjectileSpawnHeight = plugin.Config.Bind($"ShurikenItem (Server Synced)", "ProjectileSpawnHeight",
-                0.5f, new ConfigDescription(
+                1f, new ConfigDescription(
                     "The extra height applied to shuriken's spawn height.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }
