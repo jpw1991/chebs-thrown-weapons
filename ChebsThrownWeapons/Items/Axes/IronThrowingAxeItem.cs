@@ -72,11 +72,23 @@ namespace ChebsThrownWeapons.Items.Axes
         public override void UpdateRecipe()
         {
             UpdateRecipe(CraftingStationRequired, CraftingCost, CraftingStationLevel);
+            UpdateItemValues();
+        }
 
+        public void UpdateItemValues()
+        {
+            var prefab = PrefabManager.Instance.GetPrefab(ItemName);
+            if (prefab == null)
+            {
+                Logger.LogError($"Failed to update recipe: prefab with name {ItemName} is null");
+                return;
+            }
+            
             PrefabManager.Instance.GetPrefab(ProjectilePrefabName.Substring(0, ProjectilePrefabName.Length - 7))
                 .GetComponent<Projectile>().m_gravity = ProjectileGravity.Value;
 
-            var shared = ItemManager.Instance.GetItem(ItemName).ItemDrop.m_itemData.m_shared;
+            var item = prefab.GetComponent<ItemDrop>();
+            var shared = item.m_itemData.m_shared;
             shared.m_attack.m_projectileVel = ProjectileVelocity.Value;
             shared.m_damages.m_blunt = BaseBluntDamage.Value;
             shared.m_damagesPerLevel.m_blunt = BluntDamagePerLevel.Value;

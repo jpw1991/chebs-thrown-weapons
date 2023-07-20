@@ -23,12 +23,12 @@ namespace ChebsThrownWeapons
     {
         public const string PluginGuid = "com.chebgonaz.chebsthrownweapons";
         public const string PluginName = "ChebsThrownWeapons";
-        public const string PluginVersion = "1.0.2";
+        public const string PluginVersion = "1.1.0";
         
         private const string ConfigFileName = PluginGuid + ".cfg";
         private static readonly string ConfigFileFullPath = Path.Combine(Paths.ConfigPath, ConfigFileName);
 
-        public readonly System.Version ChebsValheimLibraryVersion = new("2.0.0");
+        public readonly System.Version ChebsValheimLibraryVersion = new("2.1.0");
 
         private readonly Harmony harmony = new(PluginGuid);
 
@@ -63,6 +63,29 @@ namespace ChebsThrownWeapons
             harmony.PatchAll();
 
             SetupWatcher();
+
+            PrefabManager.OnVanillaPrefabsAvailable += DoOnVanillaPrefabsAvailable;
+        }
+
+        private void DoOnVanillaPrefabsAvailable()
+        {
+            UpdateAllRecipes();
+            PrefabManager.OnVanillaPrefabsAvailable -= DoOnVanillaPrefabsAvailable;
+        }
+
+        private void UpdateAllRecipes()
+        {
+            IronJavelin.UpdateRecipe();
+            BronzeJavelin.UpdateRecipe();
+            WoodJavelin.UpdateRecipe();
+            FireJavelin.UpdateRecipe();
+            BlackMetalJavelin.UpdateRecipe();
+            BronzeShuriken.UpdateRecipe();
+            IronShuriken.UpdateRecipe();
+            BlackMetalShuriken.UpdateRecipe();
+            BronzeThrowingAxe.UpdateRecipe();
+            IronThrowingAxe.UpdateRecipe();
+            BlackMetalThrowingAxe.UpdateRecipe();
         }
         
         private void CreateConfigValues()
@@ -112,17 +135,7 @@ namespace ChebsThrownWeapons
             {
                 Logger.LogInfo("Read updated config values");
                 Config.Reload();
-                IronJavelin.UpdateRecipe();
-                BronzeJavelin.UpdateRecipe();
-                WoodJavelin.UpdateRecipe();
-                FireJavelin.UpdateRecipe();
-                BlackMetalJavelin.UpdateRecipe();
-                BronzeShuriken.UpdateRecipe();
-                IronShuriken.UpdateRecipe();
-                BlackMetalShuriken.UpdateRecipe();
-                BronzeThrowingAxe.UpdateRecipe();
-                IronThrowingAxe.UpdateRecipe();
-                BlackMetalThrowingAxe.UpdateRecipe();
+                UpdateAllRecipes();
             }
             catch (Exception exc)
             {
@@ -146,14 +159,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(ironJavelinProjectilePrefab);
                 
                     var ironJavelinPrefab = Base.LoadPrefabFromBundle(IronJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = ironJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = ironJavelinProjectilePrefab;
-                    shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_pierce = IronJavelinItem.BasePierceDamage.Value;
-                    shared.m_damagesPerLevel.m_pierce = IronJavelinItem.PierceDamagePerLevel.Value;
-                    shared.m_damages.m_slash = IronJavelinItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = IronJavelinItem.SlashingDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(IronJavelin.GetCustomItemFromPrefab(ironJavelinPrefab));   
+                    //IronJavelin.UpdateRecipe();
                 }
                 {
                     var bronzeJavelinProjectilePrefab =
@@ -162,14 +169,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(bronzeJavelinProjectilePrefab);
 
                     var bronzeJavelinPrefab = Base.LoadPrefabFromBundle(BronzeJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = bronzeJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = bronzeJavelinProjectilePrefab;
-                    shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_pierce = BronzeJavelinItem.BasePierceDamage.Value;
-                    shared.m_damagesPerLevel.m_pierce = BronzeJavelinItem.PierceDamagePerLevel.Value;
-                    shared.m_damages.m_slash = BronzeJavelinItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = BronzeJavelinItem.SlashingDamagePerLevel.Value;
-                    ItemManager.Instance.AddItem(BronzeJavelin.GetCustomItemFromPrefab(bronzeJavelinPrefab));                    
+                    ItemManager.Instance.AddItem(BronzeJavelin.GetCustomItemFromPrefab(bronzeJavelinPrefab));     
+                    //BronzeJavelin.UpdateRecipe();
                 }
                 {
                     var woodJavelinProjectilePrefab =
@@ -178,14 +179,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(woodJavelinProjectilePrefab);
 
                     var woodJavelinPrefab = Base.LoadPrefabFromBundle(WoodJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = woodJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = woodJavelinProjectilePrefab;
-                    shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_pierce = WoodJavelinItem.BasePierceDamage.Value;
-                    shared.m_damagesPerLevel.m_pierce = WoodJavelinItem.PierceDamagePerLevel.Value;
-                    shared.m_damages.m_slash = WoodJavelinItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = WoodJavelinItem.SlashingDamagePerLevel.Value;
-                    ItemManager.Instance.AddItem(WoodJavelin.GetCustomItemFromPrefab(woodJavelinPrefab));                    
+                    ItemManager.Instance.AddItem(WoodJavelin.GetCustomItemFromPrefab(woodJavelinPrefab));        
+                    //WoodJavelin.UpdateRecipe();
                 }
                 {
                     var fireJavelinProjectilePrefab =
@@ -194,16 +189,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(fireJavelinProjectilePrefab);
 
                     var fireJavelinPrefab = Base.LoadPrefabFromBundle(FireJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = fireJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = fireJavelinProjectilePrefab;
-                    shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_pierce = FireJavelinItem.BasePierceDamage.Value;
-                    shared.m_damagesPerLevel.m_pierce = FireJavelinItem.PierceDamagePerLevel.Value;
-                    shared.m_damages.m_slash = FireJavelinItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = FireJavelinItem.SlashingDamagePerLevel.Value;
-                    shared.m_damages.m_fire = FireJavelinItem.BaseFireDamage.Value;
-                    shared.m_damagesPerLevel.m_fire = FireJavelinItem.FireDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(FireJavelin.GetCustomItemFromPrefab(fireJavelinPrefab));
+                    //FireJavelin.UpdateRecipe();
                 }
                 {
                     var blackMetalJavelinProjectilePrefab = Base.LoadPrefabFromBundle(BlackMetalJavelin.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
@@ -211,14 +198,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(blackMetalJavelinProjectilePrefab);
 
                     var blackMetalJavelinPrefab = Base.LoadPrefabFromBundle(BlackMetalJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = blackMetalJavelinPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = blackMetalJavelinProjectilePrefab;
-                    shared.m_attack.m_projectileVel = JavelinItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_pierce = BlackMetalJavelinItem.BasePierceDamage.Value;
-                    shared.m_damagesPerLevel.m_pierce = BlackMetalJavelinItem.PierceDamagePerLevel.Value;
-                    shared.m_damages.m_slash = BlackMetalJavelinItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = BlackMetalJavelinItem.SlashingDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(BlackMetalJavelin.GetCustomItemFromPrefab(blackMetalJavelinPrefab));
+                    //BlackMetalJavelin.UpdateRecipe();
                 }
                 {
                     var bronzeShurikenProjectilePrefab = Base.LoadPrefabFromBundle(BronzeShuriken.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
@@ -226,16 +207,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(bronzeShurikenProjectilePrefab);
 
                     var bronzeShurikenPrefab = Base.LoadPrefabFromBundle(BronzeShuriken.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = bronzeShurikenPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = bronzeShurikenProjectilePrefab;
-                    shared.m_attack.m_projectileVel = ShurikenItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_pierce = BronzeShurikenItem.BasePierceDamage.Value;
-                    shared.m_damagesPerLevel.m_pierce = BronzeShurikenItem.PierceDamagePerLevel.Value;
-                    shared.m_damages.m_slash = BronzeShurikenItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = BronzeShurikenItem.SlashingDamagePerLevel.Value;
-                    shared.m_damages.m_poison = BronzeShurikenItem.BasePoisonDamage.Value;
-                    shared.m_damagesPerLevel.m_poison = BronzeShurikenItem.PoisonDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(BronzeShuriken.GetCustomItemFromPrefab(bronzeShurikenPrefab));
+                    //BronzeShuriken.UpdateRecipe();
                 }
                 {
                     var ironShurikenProjectilePrefab = Base.LoadPrefabFromBundle(IronShuriken.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
@@ -243,16 +216,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(ironShurikenProjectilePrefab);
 
                     var ironShurikenPrefab = Base.LoadPrefabFromBundle(IronShuriken.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = ironShurikenPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = ironShurikenProjectilePrefab;
-                    shared.m_attack.m_projectileVel = ShurikenItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_pierce = IronShurikenItem.BasePierceDamage.Value;
-                    shared.m_damagesPerLevel.m_pierce = IronShurikenItem.PierceDamagePerLevel.Value;
-                    shared.m_damages.m_slash = IronShurikenItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = IronShurikenItem.SlashingDamagePerLevel.Value;
-                    shared.m_damages.m_poison = IronShurikenItem.BasePoisonDamage.Value;
-                    shared.m_damagesPerLevel.m_poison = IronShurikenItem.PoisonDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(IronShuriken.GetCustomItemFromPrefab(ironShurikenPrefab));
+                    //IronShuriken.UpdateRecipe();
                 }
                 {
                     var blackMetalShurikenProjectilePrefab = Base.LoadPrefabFromBundle(BlackMetalShuriken.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
@@ -260,16 +225,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(blackMetalShurikenProjectilePrefab);
 
                     var blackMetalShurikenPrefab = Base.LoadPrefabFromBundle(BlackMetalShuriken.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = blackMetalShurikenPrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = blackMetalShurikenProjectilePrefab;
-                    shared.m_attack.m_projectileVel = ShurikenItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_pierce = BlackMetalShurikenItem.BasePierceDamage.Value;
-                    shared.m_damagesPerLevel.m_pierce = BlackMetalShurikenItem.PierceDamagePerLevel.Value;
-                    shared.m_damages.m_slash = BlackMetalShurikenItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = BlackMetalShurikenItem.SlashingDamagePerLevel.Value;
-                    shared.m_damages.m_poison = BlackMetalShurikenItem.BasePoisonDamage.Value;
-                    shared.m_damagesPerLevel.m_poison = BlackMetalShurikenItem.PoisonDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(BlackMetalShuriken.GetCustomItemFromPrefab(blackMetalShurikenPrefab));
+                    //BlackMetalShuriken.UpdateRecipe();
                 }
                 {
                     var bronzeThrowingAxeProjectilePrefab =
@@ -278,14 +235,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(bronzeThrowingAxeProjectilePrefab);
 
                     var bronzeThrowingAxePrefab = Base.LoadPrefabFromBundle(BronzeThrowingAxe.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = bronzeThrowingAxePrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = bronzeThrowingAxeProjectilePrefab;
-                    shared.m_attack.m_projectileVel = ThrowingAxeItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_blunt = BronzeThrowingAxeItem.BaseBluntDamage.Value;
-                    shared.m_damagesPerLevel.m_blunt = BronzeThrowingAxeItem.BluntDamagePerLevel.Value;
-                    shared.m_damages.m_slash = BronzeThrowingAxeItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = BronzeThrowingAxeItem.SlashingDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(BronzeThrowingAxe.GetCustomItemFromPrefab(bronzeThrowingAxePrefab));
+                    //BronzeThrowingAxe.UpdateRecipe();
                 }
                 {
                     var ironThrowingAxeProjectilePrefab =
@@ -294,14 +245,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(ironThrowingAxeProjectilePrefab);
 
                     var ironThrowingAxePrefab = Base.LoadPrefabFromBundle(IronThrowingAxe.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = ironThrowingAxePrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = ironThrowingAxeProjectilePrefab;
-                    shared.m_attack.m_projectileVel = ThrowingAxeItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_blunt = IronThrowingAxeItem.BaseBluntDamage.Value;
-                    shared.m_damagesPerLevel.m_blunt = IronThrowingAxeItem.BaseBluntDamage.Value;
-                    shared.m_damages.m_slash = IronThrowingAxeItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = IronThrowingAxeItem.SlashingDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(IronThrowingAxe.GetCustomItemFromPrefab(ironThrowingAxePrefab));
+                    //IronThrowingAxe.UpdateRecipe();
                 }
                 {
                     var blackMetalThrowingAxeProjectilePrefab =
@@ -310,14 +255,8 @@ namespace ChebsThrownWeapons
                     PrefabManager.Instance.AddPrefab(blackMetalThrowingAxeProjectilePrefab);
 
                     var blackMetalThrowingAxePrefab = Base.LoadPrefabFromBundle(BlackMetalThrowingAxe.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    var shared = blackMetalThrowingAxePrefab.GetComponent<ItemDrop>().m_itemData.m_shared;
-                    shared.m_attack.m_attackProjectile = blackMetalThrowingAxeProjectilePrefab;
-                    shared.m_attack.m_projectileVel = ThrowingAxeItem.ProjectileVelocity.Value;
-                    shared.m_damages.m_blunt = BlackMetalThrowingAxeItem.BaseBluntDamage.Value;
-                    shared.m_damagesPerLevel.m_blunt = BlackMetalThrowingAxeItem.BaseBluntDamage.Value;
-                    shared.m_damages.m_slash = BlackMetalThrowingAxeItem.BaseSlashingDamage.Value;
-                    shared.m_damagesPerLevel.m_slash = BlackMetalThrowingAxeItem.SlashingDamagePerLevel.Value;
                     ItemManager.Instance.AddItem(BlackMetalThrowingAxe.GetCustomItemFromPrefab(blackMetalThrowingAxePrefab));
+                    //BlackMetalThrowingAxe.UpdateRecipe();
                 }
             }
             catch (Exception ex)
