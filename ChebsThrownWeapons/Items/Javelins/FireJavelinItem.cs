@@ -94,6 +94,9 @@ namespace ChebsThrownWeapons.Items.Javelins
             shared.m_damagesPerLevel.m_pierce = PierceDamagePerLevel.Value;
             shared.m_damages.m_slash = BaseSlashingDamage.Value;
             shared.m_damagesPerLevel.m_slash = SlashingDamagePerLevel.Value;
+            var attack = shared.m_attack;
+            attack.m_attackHitNoise = AttackHitNoise.Value;
+            attack.m_attackStartNoise = AttackStartNoise.Value;
         }
 
         public override CustomItem GetCustomItemFromPrefab(GameObject prefab)

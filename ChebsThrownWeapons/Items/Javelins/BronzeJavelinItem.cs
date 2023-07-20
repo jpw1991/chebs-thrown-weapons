@@ -76,12 +76,16 @@ namespace ChebsThrownWeapons.Items.Javelins
             PrefabManager.Instance.GetPrefab(ProjectilePrefabName.Substring(0, ProjectilePrefabName.Length - 7))
                 .GetComponent<Projectile>().m_gravity = ProjectileGravity.Value;
 
-            var shared = ItemManager.Instance.GetItem(ItemName).ItemDrop.m_itemData.m_shared;
+            var item = ItemManager.Instance.GetItem(ItemName);
+            var shared = item.ItemDrop.m_itemData.m_shared;
             shared.m_attack.m_projectileVel = ProjectileVelocity.Value;
             shared.m_damages.m_pierce = BasePierceDamage.Value;
             shared.m_damagesPerLevel.m_pierce = PierceDamagePerLevel.Value;
             shared.m_damages.m_slash = BaseSlashingDamage.Value;
             shared.m_damagesPerLevel.m_slash = SlashingDamagePerLevel.Value;
+            var attack = shared.m_attack;
+            attack.m_attackHitNoise = AttackHitNoise.Value;
+            attack.m_attackStartNoise = AttackStartNoise.Value;
         }
 
         public override CustomItem GetCustomItemFromPrefab(GameObject prefab)
