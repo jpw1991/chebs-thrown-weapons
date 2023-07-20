@@ -7,7 +7,8 @@ namespace ChebsThrownWeapons.Items.Shurikens
     public class ShurikenItem : Item
     {
         public static ConfigEntry<float> ProjectileVelocity, ProjectileGravity, ProjectileSpawnHeight,
-            AttackStartNoise, AttackHitNoise;
+            AttackStartNoise, AttackHitNoise,
+            MovementModifier;
 
         public static void CreateSharedConfigs(BaseUnityPlugin plugin)
         {
@@ -37,6 +38,11 @@ namespace ChebsThrownWeapons.Items.Shurikens
                 5f, new ConfigDescription(
                     "The noise made by this weapon on impact. 30 is default for most melee weapons, " +
                     "vanilla arrows have 0.", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+            
+            MovementModifier = plugin.Config.Bind(serverSynced, "MovementModifier",
+                -0.01f, new ConfigDescription(
+                    "The weapon's movement modifier when equipped. -0.01 is 1% slower.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }
     }

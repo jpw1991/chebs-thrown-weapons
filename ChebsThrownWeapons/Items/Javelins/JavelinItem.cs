@@ -7,7 +7,8 @@ namespace ChebsThrownWeapons.Items.Javelins
     public class JavelinItem : Item
     {
         public static ConfigEntry<float> ProjectileVelocity, ProjectileGravity, ProjectileSpawnHeight,
-            AttackStartNoise, AttackHitNoise;
+            AttackStartNoise, AttackHitNoise,
+            MovementModifier;
 
         public static void CreateSharedConfigs(BaseUnityPlugin plugin)
         {
@@ -41,6 +42,11 @@ namespace ChebsThrownWeapons.Items.Javelins
                 5f, new ConfigDescription(
                     "The noise made by this weapon on impact. 30 is default for most melee weapons, " +
                     "vanilla arrows have 0.", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+            
+            MovementModifier = plugin.Config.Bind(serverSynced, "MovementModifier",
+                -0.05f, new ConfigDescription(
+                    "The weapon's movement modifier when equipped. -0.05 is 5% slower.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }
     }

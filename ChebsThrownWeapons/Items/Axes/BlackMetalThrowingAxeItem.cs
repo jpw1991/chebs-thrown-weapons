@@ -76,12 +76,14 @@ namespace ChebsThrownWeapons.Items.Axes
             PrefabManager.Instance.GetPrefab(ProjectilePrefabName.Substring(0, ProjectilePrefabName.Length - 7))
                 .GetComponent<Projectile>().m_gravity = ProjectileGravity.Value;
 
-            var shared = ItemManager.Instance.GetItem(ItemName).ItemDrop.m_itemData.m_shared;
+            var item = ItemManager.Instance.GetItem(ItemName);
+            var shared = item.ItemDrop.m_itemData.m_shared;
             shared.m_attack.m_projectileVel = ProjectileVelocity.Value;
             shared.m_damages.m_blunt = BaseBluntDamage.Value;
             shared.m_damagesPerLevel.m_blunt = BluntDamagePerLevel.Value;
             shared.m_damages.m_slash = BaseSlashingDamage.Value;
             shared.m_damagesPerLevel.m_slash = SlashingDamagePerLevel.Value;
+            shared.m_movementModifier = MovementModifier.Value;
             var attack = shared.m_attack;
             attack.m_attackHitNoise = AttackHitNoise.Value;
             attack.m_attackStartNoise = AttackStartNoise.Value;

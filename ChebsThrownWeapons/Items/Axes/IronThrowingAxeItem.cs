@@ -82,9 +82,11 @@ namespace ChebsThrownWeapons.Items.Axes
             shared.m_damagesPerLevel.m_blunt = BluntDamagePerLevel.Value;
             shared.m_damages.m_slash = BaseSlashingDamage.Value;
             shared.m_damagesPerLevel.m_slash = SlashingDamagePerLevel.Value;
+            shared.m_movementModifier = MovementModifier.Value;
             var attack = shared.m_attack;
             attack.m_attackHitNoise = AttackHitNoise.Value;
             attack.m_attackStartNoise = AttackStartNoise.Value;
+            
         }
 
         public override CustomItem GetCustomItemFromPrefab(GameObject prefab)
