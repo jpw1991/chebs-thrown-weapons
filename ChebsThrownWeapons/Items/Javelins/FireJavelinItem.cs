@@ -34,7 +34,7 @@ namespace ChebsThrownWeapons.Items.Javelins
             base.CreateConfigs(plugin);
 
             CraftingStationRequired = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "CraftingStation",
-                CraftingTable.Forge, new ConfigDescription("Crafting station where it's available",
+                CraftingTable.Workbench, new ConfigDescription("Crafting station where it's available",
                     null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
 
@@ -81,19 +81,46 @@ namespace ChebsThrownWeapons.Items.Javelins
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }
 
-        public override void UpdateRecipe()
+        public new ItemDrop UpdateRecipe()
         {
             UpdateRecipe(CraftingStationRequired, CraftingCost, CraftingStationLevel);
+            return UpdateItemValues();
+        }
 
-            PrefabManager.Instance.GetPrefab(ProjectilePrefabName.Substring(0, ProjectilePrefabName.Length - 7))
-                .GetComponent<Projectile>().m_gravity = ProjectileGravity.Value;
+        public ItemDrop UpdateItemValues()
+        {
+            var prefab = ZNetScene.instance?.GetPrefab(ItemName) ?? PrefabManager.Instance.GetPrefab(ItemName);
+            if (prefab == null)
+            {
+                Logger.LogError($"Failed to update item values: prefab with name {ItemName} is null");
+                return null;
+            }
 
-            var shared = ItemManager.Instance.GetItem(ItemName).ItemDrop.m_itemData.m_shared;
+            var projectileName = ProjectilePrefabName.Substring(0, ProjectilePrefabName.Length - 7);
+            var projectilePrefab = ZNetScene.instance?.GetPrefab(projectileName)
+                                   ?? PrefabManager.Instance.GetPrefab(projectileName);
+            if (projectilePrefab == null)
+            {
+                Logger.LogError($"Failed to update item values: prefab with name {ItemName} is null");
+            }
+            else
+            {
+                projectilePrefab.GetComponent<Projectile>().m_gravity = ProjectileGravity.Value;
+            }
+
+            var item = prefab.GetComponent<ItemDrop>();
+            var shared = item.m_itemData.m_shared;
             shared.m_attack.m_projectileVel = ProjectileVelocity.Value;
             shared.m_damages.m_pierce = BasePierceDamage.Value;
             shared.m_damagesPerLevel.m_pierce = PierceDamagePerLevel.Value;
             shared.m_damages.m_slash = BaseSlashingDamage.Value;
             shared.m_damagesPerLevel.m_slash = SlashingDamagePerLevel.Value;
+            shared.m_movementModifier = MovementModifier.Value;
+            var attack = shared.m_attack;
+            attack.m_attackHitNoise = AttackHitNoise.Value;
+            attack.m_attackStartNoise = AttackStartNoise.Value;
+            
+            return item;
         }
 
         public override CustomItem GetCustomItemFromPrefab(GameObject prefab)
