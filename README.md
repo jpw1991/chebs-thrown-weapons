@@ -80,6 +80,8 @@ Press **F1** to open the mod's configuration panel.
 
 You can also edit the configs manually. Almost everything can be tweaked to your liking. For a complete list of all configuration options, please look [here](https://github.com/jpw1991/chebs-thrown-weapons/wiki/Configs).
 
+**Important:** As of 1.1.0, local player's items dynamically update to reflect config changes so you can test tweaks immediately without having to log out & in again. However, for all items in the world to be updated, logging out & in again is required.
+
 ### Pending Improvements
 
 The following improvements have been noted, but won't be implemented until someone throws me some doubloons for it, or I find myself really bored with nothing to do someday.
@@ -105,7 +107,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
  Date | Version | Notes 
 --- | --- | ---
-19/07/2023 | 1.1.0 | Expose movement modifier to configs; Expose hit noise and start noise to config for all weapons; Make Drago's values the default values
+19/07/2023 | 1.1.0 | Expose movement modifier to configs; Expose hit noise and start noise to config for all weapons; Make Drago's values the default values; Local player items updated immediately on changing config to ease tweaking
 07/07/2023 | 1.0.2 | Fix wrong recipes on shurikens
 01/07/2023 | 1.0.1 | Fix wrong description in manifest file; update readme with link to alternative javelin mod; allow adjustment of shuriken and axe projectile height; fix config name errors
 01/07/2023 | 1.0.0 | Initial release
