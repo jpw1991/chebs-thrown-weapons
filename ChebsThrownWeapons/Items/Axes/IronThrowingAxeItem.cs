@@ -69,23 +69,32 @@ namespace ChebsThrownWeapons.Items.Axes
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }
 
-        public override void UpdateRecipe()
+        public new ItemDrop UpdateRecipe()
         {
             UpdateRecipe(CraftingStationRequired, CraftingCost, CraftingStationLevel);
-            UpdateItemValues();
+            return UpdateItemValues();
         }
 
-        public void UpdateItemValues()
+        public ItemDrop UpdateItemValues()
         {
-            var prefab = PrefabManager.Instance.GetPrefab(ItemName);
+            var prefab = ZNetScene.instance?.GetPrefab(ItemName) ?? PrefabManager.Instance.GetPrefab(ItemName);
             if (prefab == null)
             {
-                Logger.LogError($"Failed to update recipe: prefab with name {ItemName} is null");
-                return;
+                Logger.LogError($"Failed to update item values: prefab with name {ItemName} is null");
+                return null;
             }
-            
-            PrefabManager.Instance.GetPrefab(ProjectilePrefabName.Substring(0, ProjectilePrefabName.Length - 7))
-                .GetComponent<Projectile>().m_gravity = ProjectileGravity.Value;
+
+            var projectileName = ProjectilePrefabName.Substring(0, ProjectilePrefabName.Length - 7);
+            var projectilePrefab = ZNetScene.instance?.GetPrefab(projectileName)
+                                   ?? PrefabManager.Instance.GetPrefab(projectileName);
+            if (projectilePrefab == null)
+            {
+                Logger.LogError($"Failed to update item values: prefab with name {ItemName} is null");
+            }
+            else
+            {
+                projectilePrefab.GetComponent<Projectile>().m_gravity = ProjectileGravity.Value;
+            }
 
             var item = prefab.GetComponent<ItemDrop>();
             var shared = item.m_itemData.m_shared;
@@ -98,7 +107,8 @@ namespace ChebsThrownWeapons.Items.Axes
             var attack = shared.m_attack;
             attack.m_attackHitNoise = AttackHitNoise.Value;
             attack.m_attackStartNoise = AttackStartNoise.Value;
-            
+
+            return item;
         }
 
         public override CustomItem GetCustomItemFromPrefab(GameObject prefab)

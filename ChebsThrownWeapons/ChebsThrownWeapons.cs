@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using BepInEx;
 using BepInEx.Configuration;
-using ChebsThrownWeapons.Items;
 using ChebsThrownWeapons.Items.Axes;
 using ChebsThrownWeapons.Items.Javelins;
 using ChebsThrownWeapons.Items.Shurikens;
@@ -24,7 +24,7 @@ namespace ChebsThrownWeapons
         public const string PluginGuid = "com.chebgonaz.chebsthrownweapons";
         public const string PluginName = "ChebsThrownWeapons";
         public const string PluginVersion = "1.1.0";
-        
+
         private const string ConfigFileName = PluginGuid + ".cfg";
         private static readonly string ConfigFileFullPath = Path.Combine(Paths.ConfigPath, ConfigFileName);
 
@@ -42,7 +42,7 @@ namespace ChebsThrownWeapons
         public static WoodJavelinItem WoodJavelin = new();
         public static FireJavelinItem FireJavelin = new();
         public static BlackMetalJavelinItem BlackMetalJavelin = new();
-        
+
         public static BronzeShurikenItem BronzeShuriken = new();
         public static IronShurikenItem IronShuriken = new();
         public static BlackMetalShurikenItem BlackMetalShuriken = new();
@@ -73,21 +73,50 @@ namespace ChebsThrownWeapons
             PrefabManager.OnVanillaPrefabsAvailable -= DoOnVanillaPrefabsAvailable;
         }
 
-        private void UpdateAllRecipes()
+        private void UpdateItemsInScene(List<ItemDrop> itemDropList)
         {
-            IronJavelin.UpdateRecipe();
-            BronzeJavelin.UpdateRecipe();
-            WoodJavelin.UpdateRecipe();
-            FireJavelin.UpdateRecipe();
-            BlackMetalJavelin.UpdateRecipe();
-            BronzeShuriken.UpdateRecipe();
-            IronShuriken.UpdateRecipe();
-            BlackMetalShuriken.UpdateRecipe();
-            BronzeThrowingAxe.UpdateRecipe();
-            IronThrowingAxe.UpdateRecipe();
-            BlackMetalThrowingAxe.UpdateRecipe();
+            if (ZNetScene.instance == null)
+            {
+                Logger.LogError($"Failed to update item values on objects already loaded in scene." +
+                                $"You'll have to restart the game before the updates to the item's values can" +
+                                $"take effect (reason: ZNetScene.instance == null).");
+                return;
+            }
+
+            // update local player's equipment
+            if (Player.m_localPlayer == null) return;
+            var playerInventory = Player.m_localPlayer.GetInventory();
+            if (playerInventory == null || playerInventory.m_inventory == null) return;
+            foreach (var item in playerInventory.m_inventory)
+            {
+                if (item != null)
+                {
+                    var updatedItem = ObjectDB.instance.GetItemPrefab(item.m_dropPrefab?.name);
+                    if (updatedItem != null)
+                        item.m_shared = updatedItem.GetComponent<ItemDrop>().m_itemData.m_shared;
+                }
+            }
         }
-        
+
+        private void UpdateAllRecipes(bool updateItemsInScene = false)
+        {
+            var itemDrops = new List<ItemDrop>
+            {
+                IronJavelin.UpdateRecipe(),
+                BronzeJavelin.UpdateRecipe(),
+                WoodJavelin.UpdateRecipe(),
+                FireJavelin.UpdateRecipe(),
+                BlackMetalJavelin.UpdateRecipe(),
+                BronzeShuriken.UpdateRecipe(),
+                IronShuriken.UpdateRecipe(),
+                BlackMetalShuriken.UpdateRecipe(),
+                BronzeThrowingAxe.UpdateRecipe(),
+                IronThrowingAxe.UpdateRecipe(),
+                BlackMetalThrowingAxe.UpdateRecipe(),
+            };
+            if (updateItemsInScene) UpdateItemsInScene(itemDrops);
+        }
+
         private void CreateConfigValues()
         {
             Config.SaveOnConfigSet = true;
@@ -104,12 +133,12 @@ namespace ChebsThrownWeapons
             WoodJavelin.CreateConfigs(this);
             FireJavelin.CreateConfigs(this);
             BlackMetalJavelin.CreateConfigs(this);
-            
+
             ShurikenItem.CreateSharedConfigs(this);
             BronzeShuriken.CreateConfigs(this);
             IronShuriken.CreateConfigs(this);
             BlackMetalShuriken.CreateConfigs(this);
-            
+
             ThrowingAxeItem.CreateSharedConfigs(this);
             BronzeThrowingAxe.CreateConfigs(this);
             IronThrowingAxe.CreateConfigs(this);
@@ -135,7 +164,7 @@ namespace ChebsThrownWeapons
             {
                 Logger.LogInfo("Read updated config values");
                 Config.Reload();
-                UpdateAllRecipes();
+                UpdateAllRecipes(true);
             }
             catch (Exception exc)
             {
@@ -155,108 +184,130 @@ namespace ChebsThrownWeapons
                     var ironJavelinProjectilePrefab =
                         Base.LoadPrefabFromBundle(IronJavelin.ProjectilePrefabName, chebgonazAssetBundle,
                             RadeonFriendly.Value);
-                    ironJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                    ironJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        JavelinItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(ironJavelinProjectilePrefab);
-                
-                    var ironJavelinPrefab = Base.LoadPrefabFromBundle(IronJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    ItemManager.Instance.AddItem(IronJavelin.GetCustomItemFromPrefab(ironJavelinPrefab));   
-                    //IronJavelin.UpdateRecipe();
+
+                    var ironJavelinPrefab = Base.LoadPrefabFromBundle(IronJavelin.PrefabName, chebgonazAssetBundle,
+                        RadeonFriendly.Value);
+                    ItemManager.Instance.AddItem(IronJavelin.GetCustomItemFromPrefab(ironJavelinPrefab));
                 }
                 {
                     var bronzeJavelinProjectilePrefab =
-                        Base.LoadPrefabFromBundle(BronzeJavelin.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    bronzeJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                        Base.LoadPrefabFromBundle(BronzeJavelin.ProjectilePrefabName, chebgonazAssetBundle,
+                            RadeonFriendly.Value);
+                    bronzeJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        JavelinItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(bronzeJavelinProjectilePrefab);
 
-                    var bronzeJavelinPrefab = Base.LoadPrefabFromBundle(BronzeJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    ItemManager.Instance.AddItem(BronzeJavelin.GetCustomItemFromPrefab(bronzeJavelinPrefab));     
-                    //BronzeJavelin.UpdateRecipe();
+                    var bronzeJavelinPrefab = Base.LoadPrefabFromBundle(BronzeJavelin.PrefabName, chebgonazAssetBundle,
+                        RadeonFriendly.Value);
+                    ItemManager.Instance.AddItem(BronzeJavelin.GetCustomItemFromPrefab(bronzeJavelinPrefab));
                 }
                 {
                     var woodJavelinProjectilePrefab =
-                        Base.LoadPrefabFromBundle(WoodJavelin.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    woodJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                        Base.LoadPrefabFromBundle(WoodJavelin.ProjectilePrefabName, chebgonazAssetBundle,
+                            RadeonFriendly.Value);
+                    woodJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        JavelinItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(woodJavelinProjectilePrefab);
 
-                    var woodJavelinPrefab = Base.LoadPrefabFromBundle(WoodJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    ItemManager.Instance.AddItem(WoodJavelin.GetCustomItemFromPrefab(woodJavelinPrefab));        
-                    //WoodJavelin.UpdateRecipe();
+                    var woodJavelinPrefab = Base.LoadPrefabFromBundle(WoodJavelin.PrefabName, chebgonazAssetBundle,
+                        RadeonFriendly.Value);
+                    ItemManager.Instance.AddItem(WoodJavelin.GetCustomItemFromPrefab(woodJavelinPrefab));
                 }
                 {
                     var fireJavelinProjectilePrefab =
-                        Base.LoadPrefabFromBundle(FireJavelin.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    fireJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                        Base.LoadPrefabFromBundle(FireJavelin.ProjectilePrefabName, chebgonazAssetBundle,
+                            RadeonFriendly.Value);
+                    fireJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        JavelinItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(fireJavelinProjectilePrefab);
 
-                    var fireJavelinPrefab = Base.LoadPrefabFromBundle(FireJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var fireJavelinPrefab = Base.LoadPrefabFromBundle(FireJavelin.PrefabName, chebgonazAssetBundle,
+                        RadeonFriendly.Value);
                     ItemManager.Instance.AddItem(FireJavelin.GetCustomItemFromPrefab(fireJavelinPrefab));
-                    //FireJavelin.UpdateRecipe();
                 }
                 {
-                    var blackMetalJavelinProjectilePrefab = Base.LoadPrefabFromBundle(BlackMetalJavelin.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    blackMetalJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity = JavelinItem.ProjectileGravity.Value;
+                    var blackMetalJavelinProjectilePrefab = Base.LoadPrefabFromBundle(
+                        BlackMetalJavelin.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    blackMetalJavelinProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        JavelinItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(blackMetalJavelinProjectilePrefab);
 
-                    var blackMetalJavelinPrefab = Base.LoadPrefabFromBundle(BlackMetalJavelin.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var blackMetalJavelinPrefab = Base.LoadPrefabFromBundle(BlackMetalJavelin.PrefabName,
+                        chebgonazAssetBundle, RadeonFriendly.Value);
                     ItemManager.Instance.AddItem(BlackMetalJavelin.GetCustomItemFromPrefab(blackMetalJavelinPrefab));
-                    //BlackMetalJavelin.UpdateRecipe();
                 }
                 {
-                    var bronzeShurikenProjectilePrefab = Base.LoadPrefabFromBundle(BronzeShuriken.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    bronzeShurikenProjectilePrefab.GetComponent<Projectile>().m_gravity = ShurikenItem.ProjectileGravity.Value;
+                    var bronzeShurikenProjectilePrefab = Base.LoadPrefabFromBundle(BronzeShuriken.ProjectilePrefabName,
+                        chebgonazAssetBundle, RadeonFriendly.Value);
+                    bronzeShurikenProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        ShurikenItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(bronzeShurikenProjectilePrefab);
 
-                    var bronzeShurikenPrefab = Base.LoadPrefabFromBundle(BronzeShuriken.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var bronzeShurikenPrefab = Base.LoadPrefabFromBundle(BronzeShuriken.PrefabName,
+                        chebgonazAssetBundle, RadeonFriendly.Value);
                     ItemManager.Instance.AddItem(BronzeShuriken.GetCustomItemFromPrefab(bronzeShurikenPrefab));
-                    //BronzeShuriken.UpdateRecipe();
                 }
                 {
-                    var ironShurikenProjectilePrefab = Base.LoadPrefabFromBundle(IronShuriken.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    ironShurikenProjectilePrefab.GetComponent<Projectile>().m_gravity = ShurikenItem.ProjectileGravity.Value;
+                    var ironShurikenProjectilePrefab = Base.LoadPrefabFromBundle(IronShuriken.ProjectilePrefabName,
+                        chebgonazAssetBundle, RadeonFriendly.Value);
+                    ironShurikenProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        ShurikenItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(ironShurikenProjectilePrefab);
 
-                    var ironShurikenPrefab = Base.LoadPrefabFromBundle(IronShuriken.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var ironShurikenPrefab = Base.LoadPrefabFromBundle(IronShuriken.PrefabName, chebgonazAssetBundle,
+                        RadeonFriendly.Value);
                     ItemManager.Instance.AddItem(IronShuriken.GetCustomItemFromPrefab(ironShurikenPrefab));
-                    //IronShuriken.UpdateRecipe();
                 }
                 {
-                    var blackMetalShurikenProjectilePrefab = Base.LoadPrefabFromBundle(BlackMetalShuriken.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    blackMetalShurikenProjectilePrefab.GetComponent<Projectile>().m_gravity = ShurikenItem.ProjectileGravity.Value;
+                    var blackMetalShurikenProjectilePrefab = Base.LoadPrefabFromBundle(
+                        BlackMetalShuriken.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    blackMetalShurikenProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        ShurikenItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(blackMetalShurikenProjectilePrefab);
 
-                    var blackMetalShurikenPrefab = Base.LoadPrefabFromBundle(BlackMetalShuriken.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var blackMetalShurikenPrefab = Base.LoadPrefabFromBundle(BlackMetalShuriken.PrefabName,
+                        chebgonazAssetBundle, RadeonFriendly.Value);
                     ItemManager.Instance.AddItem(BlackMetalShuriken.GetCustomItemFromPrefab(blackMetalShurikenPrefab));
-                    //BlackMetalShuriken.UpdateRecipe();
                 }
                 {
                     var bronzeThrowingAxeProjectilePrefab =
-                        Base.LoadPrefabFromBundle(BronzeThrowingAxe.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    bronzeThrowingAxeProjectilePrefab.GetComponent<Projectile>().m_gravity = ThrowingAxeItem.ProjectileGravity.Value;
+                        Base.LoadPrefabFromBundle(BronzeThrowingAxe.ProjectilePrefabName, chebgonazAssetBundle,
+                            RadeonFriendly.Value);
+                    bronzeThrowingAxeProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        ThrowingAxeItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(bronzeThrowingAxeProjectilePrefab);
 
-                    var bronzeThrowingAxePrefab = Base.LoadPrefabFromBundle(BronzeThrowingAxe.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var bronzeThrowingAxePrefab = Base.LoadPrefabFromBundle(BronzeThrowingAxe.PrefabName,
+                        chebgonazAssetBundle, RadeonFriendly.Value);
                     ItemManager.Instance.AddItem(BronzeThrowingAxe.GetCustomItemFromPrefab(bronzeThrowingAxePrefab));
-                    //BronzeThrowingAxe.UpdateRecipe();
                 }
                 {
                     var ironThrowingAxeProjectilePrefab =
-                        Base.LoadPrefabFromBundle(IronThrowingAxe.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    ironThrowingAxeProjectilePrefab.GetComponent<Projectile>().m_gravity = ThrowingAxeItem.ProjectileGravity.Value;
+                        Base.LoadPrefabFromBundle(IronThrowingAxe.ProjectilePrefabName, chebgonazAssetBundle,
+                            RadeonFriendly.Value);
+                    ironThrowingAxeProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        ThrowingAxeItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(ironThrowingAxeProjectilePrefab);
 
-                    var ironThrowingAxePrefab = Base.LoadPrefabFromBundle(IronThrowingAxe.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
+                    var ironThrowingAxePrefab = Base.LoadPrefabFromBundle(IronThrowingAxe.PrefabName,
+                        chebgonazAssetBundle, RadeonFriendly.Value);
                     ItemManager.Instance.AddItem(IronThrowingAxe.GetCustomItemFromPrefab(ironThrowingAxePrefab));
-                    //IronThrowingAxe.UpdateRecipe();
                 }
                 {
                     var blackMetalThrowingAxeProjectilePrefab =
-                        Base.LoadPrefabFromBundle(BlackMetalThrowingAxe.ProjectilePrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    blackMetalThrowingAxeProjectilePrefab.GetComponent<Projectile>().m_gravity = ThrowingAxeItem.ProjectileGravity.Value;
+                        Base.LoadPrefabFromBundle(BlackMetalThrowingAxe.ProjectilePrefabName, chebgonazAssetBundle,
+                            RadeonFriendly.Value);
+                    blackMetalThrowingAxeProjectilePrefab.GetComponent<Projectile>().m_gravity =
+                        ThrowingAxeItem.ProjectileGravity.Value;
                     PrefabManager.Instance.AddPrefab(blackMetalThrowingAxeProjectilePrefab);
 
-                    var blackMetalThrowingAxePrefab = Base.LoadPrefabFromBundle(BlackMetalThrowingAxe.PrefabName, chebgonazAssetBundle, RadeonFriendly.Value);
-                    ItemManager.Instance.AddItem(BlackMetalThrowingAxe.GetCustomItemFromPrefab(blackMetalThrowingAxePrefab));
-                    //BlackMetalThrowingAxe.UpdateRecipe();
+                    var blackMetalThrowingAxePrefab = Base.LoadPrefabFromBundle(BlackMetalThrowingAxe.PrefabName,
+                        chebgonazAssetBundle, RadeonFriendly.Value);
+                    ItemManager.Instance.AddItem(
+                        BlackMetalThrowingAxe.GetCustomItemFromPrefab(blackMetalThrowingAxePrefab));
                 }
             }
             catch (Exception ex)

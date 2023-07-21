@@ -134,7 +134,6 @@
     <Compile Include="Items\Shurikens\BronzeShurikenItem.cs" />
     <Compile Include="Items\Shurikens\IronShurikenItem.cs" />
     <Compile Include="Items\Shurikens\ShurikenItem.cs" />
-    <Compile Include="Items\ThrowingItem.cs" />
     <Compile Include="Patches\AttackPatches.cs" />
     <Compile Include="Properties\IgnoreAccessModifiers.cs" />
     <Compile Include="ChebsThrownWeapons.cs" />
