@@ -99,6 +99,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 - Drago for commissioning the mod.
 - [Clint Bellanger](http://pfunked.deviantart.com/) for the [Shuriken models](https://opengameart.org/content/shuriken).
 - [Leinnan](https://opengameart.org/users/leinnan) for the [Slavic Axe Pack](https://opengameart.org/content/slavic-axes). [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/) stipulates I must indicate whether changes were made: Yes, the texture was resized to be 32x32 and passed through noise filters in Gimp to make it grainy and lower resolution. This is so it blends in better with the Valheim aesthetic.
+- 007LEXX for the Russian translation.
 
 ## Changelog
 
@@ -107,6 +108,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
  Date | Version | Notes 
 --- | --- | ---
+23/08/2023 | 1.2.0 | update for new valheim patch
 19/07/2023 | 1.1.0 | Expose movement modifier to configs; Expose hit noise and start noise to config for all weapons; Make Drago's values the default values; Local player items updated immediately on changing config to ease tweaking
 07/07/2023 | 1.0.2 | Fix wrong recipes on shurikens
 01/07/2023 | 1.0.1 | Fix wrong description in manifest file; update readme with link to alternative javelin mod; allow adjustment of shuriken and axe projectile height; fix config name errors

@@ -23,12 +23,12 @@ namespace ChebsThrownWeapons
     {
         public const string PluginGuid = "com.chebgonaz.chebsthrownweapons";
         public const string PluginName = "ChebsThrownWeapons";
-        public const string PluginVersion = "1.1.1";
+        public const string PluginVersion = "1.2.0";
 
         private const string ConfigFileName = PluginGuid + ".cfg";
         private static readonly string ConfigFileFullPath = Path.Combine(Paths.ConfigPath, ConfigFileName);
 
-        public readonly System.Version ChebsValheimLibraryVersion = new("2.1.1");
+        public readonly System.Version ChebsValheimLibraryVersion = new("2.3.0");
 
         private readonly Harmony harmony = new(PluginGuid);
 
