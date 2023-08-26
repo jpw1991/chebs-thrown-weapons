@@ -4,7 +4,8 @@ DEBUGDIR=ChebsThrownWeapons/bin/Debug
 DLL=$DEBUGDIR/ChebsThrownWeapons.dll
 LIB=../chebs-valheim-library/ChebsValheimLibrary/bin/Release/ChebsValheimLibrary.dll
 BUN=../chebs-necromancy/ChebsNecromancyUnity/Assets/AssetBundles/chebsthrownweapons
-PLUGINS=/home/$USER/.local/share/Steam/steamapps/common/Valheim/BepInEx/plugins
+#PLUGINS=/home/$USER/.local/share/Steam/steamapps/common/Valheim/BepInEx/plugins
+PLUGINS=/home/$USER/.config/r2modmanPlus-local/Valheim/profiles/cheb-development/BepInEx/plugins/ChebGonaz-ChebsThrownWeapons
 TRANSLATIONS=Translations
 
 # Check that source files exist and are readable

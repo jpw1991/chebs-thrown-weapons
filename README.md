@@ -108,6 +108,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
  Date | Version | Notes 
 --- | --- | ---
+26/08/2023 | 1.2.1 | update CVL; revise dev scripts and assembly info
 23/08/2023 | 1.2.0 | update for new valheim patch
 19/07/2023 | 1.1.0 | Expose movement modifier to configs; Expose hit noise and start noise to config for all weapons; Make Drago's values the default values; Local player items updated immediately on changing config to ease tweaking
 07/07/2023 | 1.0.2 | Fix wrong recipes on shurikens
