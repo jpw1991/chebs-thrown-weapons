@@ -19,13 +19,14 @@ namespace ChebsThrownWeapons.Items.Javelins
         protected override string DefaultRecipe => "BlackMetal:20,FineWood:20";
 
         public static ConfigEntry<CraftingTable> CraftingStationRequired;
-        public static ConfigEntry<int> CraftingStationLevel;
+        public static ConfigEntry<int> CraftingStationLevel, MaxQuality;
         public static ConfigEntry<string> CraftingCost;
 
         public static ConfigEntry<float> BasePierceDamage,
             PierceDamagePerLevel,
             BaseSlashingDamage,
-            SlashingDamagePerLevel;
+            SlashingDamagePerLevel,
+            Durability, DurabilityPerLevel;
 
         public override void CreateConfigs(BaseUnityPlugin plugin)
         {
@@ -67,6 +68,21 @@ namespace ChebsThrownWeapons.Items.Javelins
                 5f, new ConfigDescription(
                     "The bonus slashing damage dealt by the javelin every time you upgrade.", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
+            
+            Durability = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "Durability",
+                50f, new ConfigDescription(
+                    "The base durability of the weapon.", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
+            DurabilityPerLevel = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "DurabilityPerLevel",
+                10f, new ConfigDescription(
+                    "The bonus durability every time you upgrade.", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+            
+            MaxQuality = plugin.Config.Bind($"{GetType().Name} (Server Synced)", "MaxQuality",
+                4, new ConfigDescription(
+                    "How much the item can be upgraded. 4 is max.", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }
 
         public new ItemDrop UpdateRecipe()
@@ -104,6 +120,9 @@ namespace ChebsThrownWeapons.Items.Javelins
             shared.m_damages.m_slash = BaseSlashingDamage.Value;
             shared.m_damagesPerLevel.m_slash = SlashingDamagePerLevel.Value;
             shared.m_movementModifier = MovementModifier.Value;
+            shared.m_maxDurability = Durability.Value;
+            shared.m_durabilityPerLevel = DurabilityPerLevel.Value;
+            shared.m_maxQuality = MaxQuality.Value;
             var attack = shared.m_attack;
             attack.m_attackHitNoise = AttackHitNoise.Value;
             attack.m_attackStartNoise = AttackStartNoise.Value;

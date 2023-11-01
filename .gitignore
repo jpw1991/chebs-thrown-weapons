@@ -380,3 +380,4 @@ Environment.props
 ChebsThrownWeaponsUnity/Assets
 ChebsThrownWeaponsUnity/ProjectSettings/SceneTemplateSettings.json
 ChebsThrownWeaponsUnity/ProjectSettings/TimelineSettings.asset
+.github/workflows/build.yml
