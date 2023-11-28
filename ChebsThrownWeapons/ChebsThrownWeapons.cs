@@ -23,7 +23,7 @@ namespace ChebsThrownWeapons
     {
         public const string PluginGuid = "com.chebgonaz.chebsthrownweapons";
         public const string PluginName = "ChebsThrownWeapons";
-        public const string PluginVersion = "1.3.2";
+        public const string PluginVersion = "1.3.3";
 
         private const string ConfigFileName = PluginGuid + ".cfg";
         private static readonly string ConfigFileFullPath = Path.Combine(Paths.ConfigPath, ConfigFileName);
@@ -62,7 +62,18 @@ namespace ChebsThrownWeapons
             LoadAssetBundle();
             harmony.PatchAll();
 
-            SetupWatcher();
+            SynchronizationManager.OnConfigurationSynchronized += (obj, attr) =>
+            {
+                if (!attr.InitialSynchronization)
+                {
+                    Logger.LogInfo("Syncing configuration changes from server...");
+                    UpdateAllRecipes(true);
+                }
+                else
+                {
+                    Logger.LogInfo("Syncing initial configuration...");
+                }
+            };
 
             PrefabManager.OnVanillaPrefabsAvailable += DoOnVanillaPrefabsAvailable;
         }
@@ -73,7 +84,7 @@ namespace ChebsThrownWeapons
             PrefabManager.OnVanillaPrefabsAvailable -= DoOnVanillaPrefabsAvailable;
         }
 
-        private void UpdateItemsInScene(List<ItemDrop> itemDropList)
+        private void UpdateItemsInScene()
         {
             if (ZNetScene.instance == null)
             {
@@ -114,7 +125,7 @@ namespace ChebsThrownWeapons
                 IronThrowingAxe.UpdateRecipe(),
                 BlackMetalThrowingAxe.UpdateRecipe(),
             };
-            if (updateItemsInScene) UpdateItemsInScene(itemDrops);
+            if (updateItemsInScene) UpdateItemsInScene();
         }
 
         private void CreateConfigValues()
@@ -143,34 +154,6 @@ namespace ChebsThrownWeapons
             BronzeThrowingAxe.CreateConfigs(this);
             IronThrowingAxe.CreateConfigs(this);
             BlackMetalThrowingAxe.CreateConfigs(this);
-        }
-
-        private void SetupWatcher()
-        {
-            FileSystemWatcher watcher = new(Paths.ConfigPath, ConfigFileName);
-            watcher.Changed += ReadConfigValues;
-            watcher.Created += ReadConfigValues;
-            watcher.Renamed += ReadConfigValues;
-            watcher.Error += (sender, e) => Jotunn.Logger.LogError($"Error watching for config changes: {e}");
-            watcher.IncludeSubdirectories = true;
-            watcher.SynchronizingObject = ThreadingHelper.SynchronizingObject;
-            watcher.EnableRaisingEvents = true;
-        }
-
-        private void ReadConfigValues(object sender, FileSystemEventArgs e)
-        {
-            if (!File.Exists(ConfigFileFullPath)) return;
-            try
-            {
-                Logger.LogInfo("Read updated config values");
-                Config.Reload();
-                UpdateAllRecipes(true);
-            }
-            catch (Exception exc)
-            {
-                Logger.LogError($"There was an issue loading your {ConfigFileName}: {exc}");
-                Logger.LogError("Please check your config entries for spelling and format!");
-            }
         }
 
         private void LoadAssetBundle()
