@@ -109,6 +109,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
  Date | Version | Notes 
 --- | --- | ---
+28/11/2023 | 1.3.2 | fix bug where blocking using a weapon would crash the game
 01/11/2023 | 1.3.1 | fix bug of fire javelin's fire damage not being applied from config; fixed bug of javelins not being upgradable; add new configurations for tweaking durability, durability per level, and how much an item can be upgraded
 26/08/2023 | 1.2.1 | update CVL; revise dev scripts and assembly info
 23/08/2023 | 1.2.0 | update for new valheim patch
