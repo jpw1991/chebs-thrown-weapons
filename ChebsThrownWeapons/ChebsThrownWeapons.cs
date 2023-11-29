@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using BepInEx;
 using BepInEx.Configuration;
 using ChebsThrownWeapons.Items.Axes;
@@ -12,6 +15,7 @@ using Jotunn;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using Jotunn.Utils;
+using UnityEngine;
 using Paths = BepInEx.Paths;
 
 namespace ChebsThrownWeapons
@@ -61,19 +65,16 @@ namespace ChebsThrownWeapons
             CreateConfigValues();
             LoadAssetBundle();
             harmony.PatchAll();
-
+            
             SynchronizationManager.OnConfigurationSynchronized += (obj, attr) =>
             {
-                if (!attr.InitialSynchronization)
-                {
-                    Logger.LogInfo("Syncing configuration changes from server...");
-                    UpdateAllRecipes(true);
-                }
-                else
-                {
-                    Logger.LogInfo("Syncing initial configuration...");
-                }
+                Logger.LogInfo(!attr.InitialSynchronization
+                    ? "Syncing configuration changes from server..."
+                    : "Syncing initial configuration...");
+                UpdateAllRecipes(true);
             };
+
+            StartCoroutine(WatchConfigFile());
 
             PrefabManager.OnVanillaPrefabsAvailable += DoOnVanillaPrefabsAvailable;
         }
@@ -83,8 +84,30 @@ namespace ChebsThrownWeapons
             UpdateAllRecipes();
             PrefabManager.OnVanillaPrefabsAvailable -= DoOnVanillaPrefabsAvailable;
         }
+        
+        private byte[] GetFileHash(string fileName)
+        {
+            var sha1 = HashAlgorithm.Create();
+            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            return sha1.ComputeHash(stream);
+        }
 
-        private void UpdateItemsInScene()
+        private IEnumerator WatchConfigFile()
+        {
+            var lastHash = GetFileHash(ConfigFileFullPath);
+            while (true)
+            {
+                yield return new WaitForSeconds(5);
+                var hash = GetFileHash(ConfigFileFullPath);
+                if (!hash.SequenceEqual(lastHash))
+                {
+                    lastHash = hash;
+                    ReadConfigValues();
+                }
+            }
+        }
+
+        private void UpdateItemsInScene(List<ItemDrop> itemDropList)
         {
             if (ZNetScene.instance == null)
             {
@@ -125,7 +148,7 @@ namespace ChebsThrownWeapons
                 IronThrowingAxe.UpdateRecipe(),
                 BlackMetalThrowingAxe.UpdateRecipe(),
             };
-            if (updateItemsInScene) UpdateItemsInScene();
+            if (updateItemsInScene) UpdateItemsInScene(itemDrops);
         }
 
         private void CreateConfigValues()
@@ -154,6 +177,21 @@ namespace ChebsThrownWeapons
             BronzeThrowingAxe.CreateConfigs(this);
             IronThrowingAxe.CreateConfigs(this);
             BlackMetalThrowingAxe.CreateConfigs(this);
+        }
+
+        private void ReadConfigValues()
+        {
+            try
+            {
+                var adminOrLocal = ZNet.instance.IsServerInstance() || ZNet.instance.IsLocalInstance();
+                Logger.LogInfo($"Read updated config values (admin/local={adminOrLocal})");
+                if (adminOrLocal) Config.Reload();
+                UpdateAllRecipes(true);
+            }
+            catch (Exception exc)
+            {
+                Logger.LogError($"There was an issue loading your {ConfigFileName}: {exc}");
+            }
         }
 
         private void LoadAssetBundle()
