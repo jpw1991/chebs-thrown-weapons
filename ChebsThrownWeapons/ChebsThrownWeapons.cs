@@ -78,13 +78,8 @@ namespace ChebsThrownWeapons
 
             PrefabManager.OnVanillaPrefabsAvailable += DoOnVanillaPrefabsAvailable;
         }
-
-        private void DoOnVanillaPrefabsAvailable()
-        {
-            UpdateAllRecipes();
-            PrefabManager.OnVanillaPrefabsAvailable -= DoOnVanillaPrefabsAvailable;
-        }
         
+        #region ConfigUpdate
         private byte[] GetFileHash(string fileName)
         {
             var sha1 = HashAlgorithm.Create();
@@ -106,7 +101,29 @@ namespace ChebsThrownWeapons
                 }
             }
         }
+        
+        private void ReadConfigValues()
+        {
+            try
+            {
+                var adminOrLocal = ZNet.instance.IsServerInstance() || ZNet.instance.IsLocalInstance();
+                Logger.LogInfo($"Read updated config values (admin/local={adminOrLocal})");
+                if (adminOrLocal) Config.Reload();
+                UpdateAllRecipes(true);
+            }
+            catch (Exception exc)
+            {
+                Logger.LogError($"There was an issue loading your {ConfigFileName}: {exc}");
+            }
+        }
+        #endregion
 
+        private void DoOnVanillaPrefabsAvailable()
+        {
+            UpdateAllRecipes();
+            PrefabManager.OnVanillaPrefabsAvailable -= DoOnVanillaPrefabsAvailable;
+        }
+        
         private void UpdateItemsInScene(List<ItemDrop> itemDropList)
         {
             if (ZNetScene.instance == null)
@@ -179,20 +196,7 @@ namespace ChebsThrownWeapons
             BlackMetalThrowingAxe.CreateConfigs(this);
         }
 
-        private void ReadConfigValues()
-        {
-            try
-            {
-                var adminOrLocal = ZNet.instance.IsServerInstance() || ZNet.instance.IsLocalInstance();
-                Logger.LogInfo($"Read updated config values (admin/local={adminOrLocal})");
-                if (adminOrLocal) Config.Reload();
-                UpdateAllRecipes(true);
-            }
-            catch (Exception exc)
-            {
-                Logger.LogError($"There was an issue loading your {ConfigFileName}: {exc}");
-            }
-        }
+        
 
         private void LoadAssetBundle()
         {
