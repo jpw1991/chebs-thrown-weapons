@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using BepInEx;
 using BepInEx.Configuration;
 using ChebsThrownWeapons.Items.Axes;
@@ -12,6 +15,7 @@ using Jotunn;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using Jotunn.Utils;
+using UnityEngine;
 using Paths = BepInEx.Paths;
 
 namespace ChebsThrownWeapons
@@ -23,7 +27,7 @@ namespace ChebsThrownWeapons
     {
         public const string PluginGuid = "com.chebgonaz.chebsthrownweapons";
         public const string PluginName = "ChebsThrownWeapons";
-        public const string PluginVersion = "1.3.2";
+        public const string PluginVersion = "1.3.3";
 
         private const string ConfigFileName = PluginGuid + ".cfg";
         private static readonly string ConfigFileFullPath = Path.Combine(Paths.ConfigPath, ConfigFileName);
@@ -61,18 +65,65 @@ namespace ChebsThrownWeapons
             CreateConfigValues();
             LoadAssetBundle();
             harmony.PatchAll();
+            
+            SynchronizationManager.OnConfigurationSynchronized += (obj, attr) =>
+            {
+                Logger.LogInfo(!attr.InitialSynchronization
+                    ? "Syncing configuration changes from server..."
+                    : "Syncing initial configuration...");
+                UpdateAllRecipes(true);
+            };
 
-            SetupWatcher();
+            StartCoroutine(WatchConfigFile());
 
             PrefabManager.OnVanillaPrefabsAvailable += DoOnVanillaPrefabsAvailable;
         }
+        
+        #region ConfigUpdate
+        private byte[] GetFileHash(string fileName)
+        {
+            var sha1 = HashAlgorithm.Create();
+            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            return sha1.ComputeHash(stream);
+        }
+
+        private IEnumerator WatchConfigFile()
+        {
+            var lastHash = GetFileHash(ConfigFileFullPath);
+            while (true)
+            {
+                yield return new WaitForSeconds(5);
+                var hash = GetFileHash(ConfigFileFullPath);
+                if (!hash.SequenceEqual(lastHash))
+                {
+                    lastHash = hash;
+                    ReadConfigValues();
+                }
+            }
+        }
+        
+        private void ReadConfigValues()
+        {
+            try
+            {
+                var adminOrLocal = ZNet.instance.IsServerInstance() || ZNet.instance.IsLocalInstance();
+                Logger.LogInfo($"Read updated config values (admin/local={adminOrLocal})");
+                if (adminOrLocal) Config.Reload();
+                UpdateAllRecipes(true);
+            }
+            catch (Exception exc)
+            {
+                Logger.LogError($"There was an issue loading your {ConfigFileName}: {exc}");
+            }
+        }
+        #endregion
 
         private void DoOnVanillaPrefabsAvailable()
         {
             UpdateAllRecipes();
             PrefabManager.OnVanillaPrefabsAvailable -= DoOnVanillaPrefabsAvailable;
         }
-
+        
         private void UpdateItemsInScene(List<ItemDrop> itemDropList)
         {
             if (ZNetScene.instance == null)
@@ -145,33 +196,7 @@ namespace ChebsThrownWeapons
             BlackMetalThrowingAxe.CreateConfigs(this);
         }
 
-        private void SetupWatcher()
-        {
-            FileSystemWatcher watcher = new(Paths.ConfigPath, ConfigFileName);
-            watcher.Changed += ReadConfigValues;
-            watcher.Created += ReadConfigValues;
-            watcher.Renamed += ReadConfigValues;
-            watcher.Error += (sender, e) => Jotunn.Logger.LogError($"Error watching for config changes: {e}");
-            watcher.IncludeSubdirectories = true;
-            watcher.SynchronizingObject = ThreadingHelper.SynchronizingObject;
-            watcher.EnableRaisingEvents = true;
-        }
-
-        private void ReadConfigValues(object sender, FileSystemEventArgs e)
-        {
-            if (!File.Exists(ConfigFileFullPath)) return;
-            try
-            {
-                Logger.LogInfo("Read updated config values");
-                Config.Reload();
-                UpdateAllRecipes(true);
-            }
-            catch (Exception exc)
-            {
-                Logger.LogError($"There was an issue loading your {ConfigFileName}: {exc}");
-                Logger.LogError("Please check your config entries for spelling and format!");
-            }
-        }
+        
 
         private void LoadAssetBundle()
         {
