@@ -109,6 +109,7 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 
  Date | Version | Notes 
 --- | --- | ---
+25/04/2024 | 1.4.0 | Prepare for ashlands; upgrade CVL
 29/11/2023 | 1.3.3 | Fix issue of configs not syncing reliably
 28/11/2023 | 1.3.2 | fix bug where blocking using a weapon would crash the game
 01/11/2023 | 1.3.1 | fix bug of fire javelin's fire damage not being applied from config; fixed bug of javelins not being upgradable; add new configurations for tweaking durability, durability per level, and how much an item can be upgraded
