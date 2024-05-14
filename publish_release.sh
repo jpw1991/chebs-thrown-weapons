@@ -1,8 +1,8 @@
 #!/bin/bash
 
-RELEASEDIR=ChebsThrownWeapons/bin/Release
+RELEASEDIR=ChebsThrownWeapons/bin/Release/net48
 DLL=$RELEASEDIR/ChebsThrownWeapons.dll
-LIB=../chebs-valheim-library/ChebsValheimLibrary/bin/Release/ChebsValheimLibrary.dll
+LIB=$RELEASEDIR/ChebsValheimLibrary.dll
 BUN=../chebs-necromancy/ChebsNecromancyUnity/Assets/AssetBundles/chebsthrownweapons
 PLUGINS=ChebsThrownWeapons/Package/plugins
 README=README.md
