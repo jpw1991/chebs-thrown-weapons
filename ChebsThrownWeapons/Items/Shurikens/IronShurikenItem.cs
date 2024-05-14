@@ -144,7 +144,7 @@ namespace ChebsThrownWeapons.Items.Shurikens
             return item;
         }
 
-        public override CustomItem GetCustomItemFromPrefab(GameObject prefab)
+        public override CustomItem GetCustomItemFromPrefab(GameObject prefab, bool fixReferences = true)
         {
             var config = new ItemConfig
             {

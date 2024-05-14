@@ -1,8 +1,8 @@
 #!/bin/bash
 
-DEBUGDIR=ChebsThrownWeapons/bin/Debug
+DEBUGDIR=ChebsThrownWeapons/bin/Debug/net48
 DLL=$DEBUGDIR/ChebsThrownWeapons.dll
-LIB=../chebs-valheim-library/ChebsValheimLibrary/bin/Release/ChebsValheimLibrary.dll
+LIB=$DEBUGDIR/ChebsValheimLibrary.dll
 BUN=../chebs-necromancy/ChebsNecromancyUnity/Assets/AssetBundles/chebsthrownweapons
 #PLUGINS=/home/$USER/.local/share/Steam/steamapps/common/Valheim/BepInEx/plugins
 PLUGINS=/home/$USER/.config/r2modmanPlus-local/Valheim/profiles/cheb-development/BepInEx/plugins/ChebGonaz-ChebsThrownWeapons
