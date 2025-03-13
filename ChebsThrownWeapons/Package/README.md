@@ -105,6 +105,15 @@ You can find the github [here](https://github.com/jpw1991/chebs-thrown-weapons).
 ## Changelog
 
 <details>
+<summary>2025</summary>
+
+Date | Version | Notes
+--- | --- | ---
+13/03/2025 | 1.4.1 | Update for 2025
+
+</details>
+
+<details>
 <summary>2023</summary>
 
  Date | Version | Notes 

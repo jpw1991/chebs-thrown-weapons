@@ -3,7 +3,7 @@
 DEBUGDIR=ChebsThrownWeapons/bin/Debug/net48
 DLL=$DEBUGDIR/ChebsThrownWeapons.dll
 LIB=$DEBUGDIR/ChebsValheimLibrary.dll
-BUN=../chebs-necromancy/ChebsNecromancyUnity/Assets/AssetBundles/chebsthrownweapons
+BUN=ChebsThrownWeaponsUnity/Assets/AssetBundles/chebsthrownweapons
 #PLUGINS=/home/$USER/.local/share/Steam/steamapps/common/Valheim/BepInEx/plugins
 PLUGINS=/home/$USER/.config/r2modmanPlus-local/Valheim/profiles/cheb-development/BepInEx/plugins/ChebGonaz-ChebsThrownWeapons
 TRANSLATIONS=Translations
@@ -44,5 +44,4 @@ fi
 cp -f "$DLL" "$PLUGINS" || { echo "Error: Failed to copy $DLL"; exit 1; }
 cp -f "$LIB" "$PLUGINS" || { echo "Error: Failed to copy $LIB"; exit 1; }
 cp -f "$BUN" "$PLUGINS" || { echo "Error: Failed to copy $BUN"; exit 1; }
-cp -f "$BUN.manifest" "$PLUGINS" || { echo "Error: Failed to copy $BUN.manifest"; exit 1; }
 cp -rf "$TRANSLATIONS" "$PLUGINS" || { echo "Error: Failed to copy $TRANSLATIONS"; exit 1; }
